@@ -7,6 +7,8 @@
 #include <QSlider>
 #include <QSpinBox>
 
+#include "Parameters.h"
+
 
 constexpr int kTMin = 1;
 constexpr int kTMax = 20;
@@ -31,6 +33,7 @@ private slots:
     void update_nt(int n);
     void update_sizet(int n);
     void updateLabels();
+    void initiateState();
 
 private:
     QLabel *labelEquation;
@@ -40,6 +43,8 @@ private:
     QSlider *sliderSizeT, *sliderNT;
     QLabel *labelDT_1, *labelDT_2, *labelDT;
 
+    Parameters *param;
+    double t_cur_;
     MethodType method_;
 };
 

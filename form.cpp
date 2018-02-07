@@ -3,7 +3,7 @@
 #include <QLayout>
 
 Form::Form(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent), param(nullptr), t_cur_(0.0)
 {
     labelEquation = new QLabel(tr("Equation type"));
     comboBoxEquation = new QComboBox();
@@ -39,7 +39,7 @@ Form::Form(QWidget *parent)
 
     labelDT_1 = new QLabel(tr("Integration step"));
     labelDT_2 = new QLabel(tr("∆t = "));
-    labelDT_2->setAlignment(Qt::AlignRight);
+    labelDT_2->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     labelDT = new QLabel();
 
     QGridLayout *layoutParam = new QGridLayout();
@@ -59,15 +59,18 @@ Form::Form(QWidget *parent)
 
     setLayout(layoutParam);
 
+    connect(comboBoxEquation, SIGNAL(currentIndexChanged(int)), this, SLOT(initiateState()));
     connect(sliderSizeT, SIGNAL(valueChanged(int)), this, SLOT(update_sizet(int)));
     connect(sliderNT, SIGNAL(valueChanged(int)), this, SLOT(update_nt(int)));
     connect(spinBoxSizeT, SIGNAL(valueChanged(int)), this, SLOT(update_sizet(int)));
     connect(spinBoxNT, SIGNAL(valueChanged(int)), this, SLOT(update_nt(int)));
 
+    initiateState();
 }
 
 Form::~Form()
 {
+    delete param;
 }
 
 void Form::update_sizet(int n)
@@ -81,7 +84,7 @@ void Form::update_sizet(int n)
     spinBoxSizeT->blockSignals(false);
     sliderSizeT->blockSignals(false);
 
-    updateLabels();
+    initiateState();
 }
 
 void Form::update_nt(int n)
@@ -95,10 +98,18 @@ void Form::update_nt(int n)
     spinBoxNT->blockSignals(false);
     sliderNT->blockSignals(false);
 
-    updateLabels();
+    initiateState();
 }
 
 void Form::updateLabels()
 {
-    //labelDT->setText(QString::number());
+    labelDT->setText(QString::number(param->get_tstep(), 'f', 3));
+}
+
+void Form::initiateState()
+{
+    delete param;
+    param = new Parameters(spinBoxSizeT->value(), spinBoxNT->value());
+
+    updateLabels();
 }
