@@ -27,11 +27,11 @@ Form::Form(QWidget *parent)
     QGridLayout *layoutParam = new QGridLayout();
     layoutParam->addWidget(labelEquation, 0, 0, 1, 1);
     layoutParam->addWidget(comboBoxEquation, 0, 1, 1, 2);
-    layoutParam->addWidget(labelSizeT_1, 1, 0, 1, 1);
-    layoutParam->addWidget(labelSizeT_2, 1, 1, 1, 1);
+    layoutParam->addWidget(labelSizeT_1, 1, 0, 1, 1, Qt::AlignBaseline);
+    layoutParam->addWidget(labelSizeT_2, 1, 1, 1, 1, Qt::AlignBaseline);
     layoutParam->addWidget(spinBoxSizeT, 1, 2, 1, 1);
-    layoutParam->addWidget(labelNT_1, 2, 0, 1, 1);
-    layoutParam->addWidget(labelNT_2, 2, 1, 1, 1);
+    layoutParam->addWidget(labelNT_1, 2, 0, 1, 1, Qt::AlignBaseline);
+    layoutParam->addWidget(labelNT_2, 2, 1, 1, 1, Qt::AlignBaseline);
     layoutParam->addWidget(spinBoxNT, 2, 2, 1, 1);
     layoutParam->addWidget(labelDT_1, 3, 0, 1, 1);
     layoutParam->addWidget(labelDT_2, 3, 1, 1, 1);
