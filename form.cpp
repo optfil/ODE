@@ -2,6 +2,8 @@
 
 #include <QLayout>
 
+#include <QDebug>
+
 Form::Form(QWidget *parent)
     : QWidget(parent), param(nullptr), t_cur_(0.0)
 {
@@ -38,9 +40,22 @@ Form::Form(QWidget *parent)
     sliderNT->setValue(kNtMin);
 
     labelDT_1 = new QLabel(tr("Integration step"));
+    labelDT_1->setAlignment(Qt::AlignTop);
     labelDT_2 = new QLabel(tr("∆t = "));
-    labelDT_2->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    labelDT_2->setAlignment(Qt::AlignRight | Qt::AlignTop);
     labelDT = new QLabel();
+    labelDT->setAlignment(Qt::AlignTop);
+
+    QWidget *eulerWidget = new QWidget();
+    QWidget *leapfrogWidget = new QWidget();
+    QWidget *twostepWidget = new QWidget();
+    QWidget *rungekuttaWidget = new QWidget();
+
+    tabWidgetMethods = new QTabWidget();
+    tabWidgetMethods->addTab(eulerWidget, tr("Euler"));
+    tabWidgetMethods->addTab(leapfrogWidget, tr("Leap frog"));
+    tabWidgetMethods->addTab(twostepWidget, tr("Two-step"));
+    tabWidgetMethods->addTab(rungekuttaWidget, tr("Runge-Kutta"));
 
     QGridLayout *layoutParam = new QGridLayout();
     layoutParam->addWidget(labelEquation, 0, 0, 1, 1);
@@ -57,15 +72,23 @@ Form::Form(QWidget *parent)
     layoutParam->addWidget(labelDT_2, 3, 1, 1, 1);
     layoutParam->addWidget(labelDT, 3, 2, 1, 1);
 
-    setLayout(layoutParam);
+    QHBoxLayout *layoutMain = new QHBoxLayout();
+    layoutMain->addLayout(layoutParam);
+    layoutMain->addWidget(tabWidgetMethods);
+
+    setLayout(layoutMain);
 
     connect(comboBoxEquation, SIGNAL(currentIndexChanged(int)), this, SLOT(initiateState()));
     connect(sliderSizeT, SIGNAL(valueChanged(int)), this, SLOT(update_sizet(int)));
     connect(sliderNT, SIGNAL(valueChanged(int)), this, SLOT(update_nt(int)));
     connect(spinBoxSizeT, SIGNAL(valueChanged(int)), this, SLOT(update_sizet(int)));
     connect(spinBoxNT, SIGNAL(valueChanged(int)), this, SLOT(update_nt(int)));
+    connect(tabWidgetMethods, SIGNAL(currentChanged(int)), this, SLOT(updateSolution()));
 
     initiateState();
+
+    qDebug() << labelNT_1->alignment() << labelNT_2->alignment() << spinBoxNT->alignment();
+    qDebug() << labelDT_1->alignment() << labelDT_2->alignment() << labelDT->alignment();
 }
 
 Form::~Form()
@@ -112,4 +135,9 @@ void Form::initiateState()
     param = new Parameters(spinBoxSizeT->value(), spinBoxNT->value());
 
     updateLabels();
+}
+
+void Form::updateSolution()
+{
+    method_ = static_cast<MethodType>(tabWidgetMethods->currentIndex());
 }

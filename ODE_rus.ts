@@ -34,24 +34,44 @@
         <translation>T = </translation>
     </message>
     <message>
-        <location filename="form.cpp" line="18"/>
+        <location filename="form.cpp" line="20"/>
         <source>Integration points</source>
         <translation>Количество шагов</translation>
     </message>
     <message>
-        <location filename="form.cpp" line="19"/>
+        <location filename="form.cpp" line="21"/>
         <source>NT = </source>
         <translation>NT = </translation>
     </message>
     <message>
-        <location filename="form.cpp" line="22"/>
+        <location filename="form.cpp" line="40"/>
         <source>Integration step</source>
         <translation>Шаг интегрирования</translation>
     </message>
     <message>
-        <location filename="form.cpp" line="23"/>
+        <location filename="form.cpp" line="41"/>
         <source>∆t = </source>
         <translation>∆t = </translation>
+    </message>
+    <message>
+        <location filename="form.cpp" line="51"/>
+        <source>Euler</source>
+        <translation>Метод Эйлера</translation>
+    </message>
+    <message>
+        <location filename="form.cpp" line="52"/>
+        <source>Leap frog</source>
+        <translation>Метод с перешагиванием</translation>
+    </message>
+    <message>
+        <location filename="form.cpp" line="53"/>
+        <source>Two-step</source>
+        <translation>Явный двухшаговый метод</translation>
+    </message>
+    <message>
+        <location filename="form.cpp" line="54"/>
+        <source>Runge-Kutta</source>
+        <translation>Метод Рунге-Кутты</translation>
     </message>
 </context>
 </TS>

@@ -6,6 +6,7 @@
 #include <QComboBox>
 #include <QSlider>
 #include <QSpinBox>
+#include <QTabWidget>
 
 #include "Parameters.h"
 
@@ -34,6 +35,7 @@ private slots:
     void update_sizet(int n);
     void updateLabels();
     void initiateState();
+    void updateSolution();
 
 private:
     QLabel *labelEquation;
@@ -42,6 +44,7 @@ private:
     QSpinBox *spinBoxSizeT, *spinBoxNT;
     QSlider *sliderSizeT, *sliderNT;
     QLabel *labelDT_1, *labelDT_2, *labelDT;
+    QTabWidget *tabWidgetMethods;
 
     Parameters *param;
     double t_cur_;
