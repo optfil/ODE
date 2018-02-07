@@ -24,6 +24,9 @@ public:
     enum EquationType {Decay, Grow, Oscillate};
     Q_ENUM(EquationType)
 
+    enum MethodType {Euler, LeapFrog, TwoStep, RungeKutta};
+    Q_ENUM(MethodType)
+
 private slots:
     void update_nt(int n);
     void update_sizet(int n);
@@ -36,6 +39,8 @@ private:
     QSpinBox *spinBoxSizeT, *spinBoxNT;
     QSlider *sliderSizeT, *sliderNT;
     QLabel *labelDT_1, *labelDT_2, *labelDT;
+
+    MethodType method_;
 };
 
 #endif // FORM_H
