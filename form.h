@@ -27,6 +27,7 @@ public:
 private slots:
     void update_nt(int n);
     void update_sizet(int n);
+    void updateLabels();
 
 private:
     QLabel *labelEquation;

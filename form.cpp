@@ -80,6 +80,8 @@ void Form::update_sizet(int n)
 
     spinBoxSizeT->blockSignals(false);
     sliderSizeT->blockSignals(false);
+
+    updateLabels();
 }
 
 void Form::update_nt(int n)
@@ -92,4 +94,11 @@ void Form::update_nt(int n)
 
     spinBoxNT->blockSignals(false);
     sliderNT->blockSignals(false);
+
+    updateLabels();
+}
+
+void Form::updateLabels()
+{
+    //labelDT->setText(QString::number());
 }
