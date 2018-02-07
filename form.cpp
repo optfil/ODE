@@ -12,12 +12,15 @@ Form::Form(QWidget *parent)
 
     labelSizeT_1 = new QLabel(tr("Integration time"));
     labelSizeT_2 = new QLabel(tr("T = "));
+    labelSizeT_2->setAlignment(Qt::AlignRight);
     spinBoxSizeT = new QSpinBox();
     labelNT_1 = new QLabel(tr("Integration points"));
     labelNT_2 = new QLabel(tr("NT = "));
+    labelNT_2->setAlignment(Qt::AlignRight);
     spinBoxNT = new QSpinBox();
     labelDT_1 = new QLabel(tr("Integration step"));
     labelDT_2 = new QLabel(tr("∆t = "));
+    labelDT_2->setAlignment(Qt::AlignRight);
     labelDT = new QLabel();
 
     QGridLayout *layoutT = new QGridLayout();
