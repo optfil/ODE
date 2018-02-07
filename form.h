@@ -17,6 +17,7 @@ public:
     enum EquationType {Decay, Grow, Oscillate};
     Q_ENUM(EquationType)
 
+    QLabel *labelEquation;
     QComboBox *comboBoxEquation;
     QLabel *labelSizeT_1, *labelSizeT_2, *labelNT_1, *labelNT_2;
     QSpinBox *spinBoxSizeT, *spinBoxNT;

@@ -29,3 +29,5 @@ SOURCES += \
 
 HEADERS += \
         form.h
+
+TRANSLATIONS += ODE_rus.ts

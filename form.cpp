@@ -5,6 +5,7 @@
 Form::Form(QWidget *parent)
     : QWidget(parent)
 {
+    labelEquation = new QLabel(tr("Equation type"));
     comboBoxEquation = new QComboBox();
     comboBoxEquation->addItem(tr("y' = -y"), QVariant(Decay));
     comboBoxEquation->addItem(tr("y' = y"), QVariant(Grow));
@@ -23,20 +24,18 @@ Form::Form(QWidget *parent)
     labelDT_2->setAlignment(Qt::AlignRight);
     labelDT = new QLabel();
 
-    QGridLayout *layoutT = new QGridLayout();
-    layoutT->addWidget(labelSizeT_1, 0, 0, 1, 1);
-    layoutT->addWidget(labelSizeT_2, 0, 1, 1, 1);
-    layoutT->addWidget(spinBoxSizeT, 0, 2, 1, 1);
-    layoutT->addWidget(labelNT_1, 1, 0, 1, 1);
-    layoutT->addWidget(labelNT_2, 1, 1, 1, 1);
-    layoutT->addWidget(spinBoxNT, 1, 2, 1, 1);
-    layoutT->addWidget(labelDT_1, 2, 0, 1, 1);
-    layoutT->addWidget(labelDT_2, 2, 1, 1, 1);
-    layoutT->addWidget(labelDT, 2, 2, 1, 1);
-
-    QVBoxLayout *layoutParam = new QVBoxLayout();
-    layoutParam->addWidget(comboBoxEquation);
-    layoutParam->addLayout(layoutT);
+    QGridLayout *layoutParam = new QGridLayout();
+    layoutParam->addWidget(labelEquation, 0, 0, 1, 1);
+    layoutParam->addWidget(comboBoxEquation, 0, 1, 1, 2);
+    layoutParam->addWidget(labelSizeT_1, 1, 0, 1, 1);
+    layoutParam->addWidget(labelSizeT_2, 1, 1, 1, 1);
+    layoutParam->addWidget(spinBoxSizeT, 1, 2, 1, 1);
+    layoutParam->addWidget(labelNT_1, 2, 0, 1, 1);
+    layoutParam->addWidget(labelNT_2, 2, 1, 1, 1);
+    layoutParam->addWidget(spinBoxNT, 2, 2, 1, 1);
+    layoutParam->addWidget(labelDT_1, 3, 0, 1, 1);
+    layoutParam->addWidget(labelDT_2, 3, 1, 1, 1);
+    layoutParam->addWidget(labelDT, 3, 2, 1, 1);
 
     setLayout(layoutParam);
 }
