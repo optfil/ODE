@@ -21,7 +21,7 @@ Form::Form(QWidget *parent)
     labelNT_2 = new QLabel(tr("NT = "));
     labelNT_2->setAlignment(Qt::AlignRight);
     spinBoxNT = new QSpinBox();
-    spinBoxNT->setMinimum(1);
+    spinBoxNT->setMinimum(2);
     spinBoxNT->setMaximum(100);
 
     sliderSizeT = new QSlider(Qt::Horizontal);
