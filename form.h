@@ -18,6 +18,7 @@ constexpr int kTMin = 1;
 constexpr int kTMax = 20;
 constexpr int kNtMin = 2;
 constexpr int kNtMax = 100;
+constexpr int kIdealPoints = 200;
 
 class Form : public QWidget
 {

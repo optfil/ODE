@@ -1,8 +1,24 @@
 #include "form.h"
 
+#include <cmath>
+
 #include <QLayout>
 
 #include <QDebug>
+
+static double direct(double t, Form::EquationType type)
+{
+    switch (type)
+    {
+    case Form::Decay:
+        return std::exp(-t);
+    case Form::Grow:
+        return std::exp(t);
+    case Form::Oscillate:
+        return std::cos(t);
+    }
+    return 0.0;
+}
 
 static void setGrid(QValueAxis* ax)
 {
@@ -116,7 +132,7 @@ Form::Form(QWidget *parent)
     axisXEulerSolution->setLineVisible(false);
     setGrid(axisXEulerSolution);
     axisXEulerSolution->setLabelsVisible(false);
-    axisXEulerSolution->setRange(0.0, kTMin);
+    axisXEulerSolution->setRange(0.0, 1.0);
     eulerSolutionChart->addAxis(axisXEulerSolution, Qt::AlignBottom);
     seriesEulerIdeal->attachAxis(axisXEulerSolution);
     seriesEulerSolution->attachAxis(axisXEulerSolution);
@@ -142,7 +158,7 @@ Form::Form(QWidget *parent)
     axisXEulerLocal->setLineVisible(false);
     setGrid(axisXEulerLocal);
     axisXEulerLocal->setLabelsVisible(false);
-    axisXEulerLocal->setRange(0.0, kTMin);
+    axisXEulerLocal->setRange(0.0, 1.0);
     eulerLocalChart->addAxis(axisXEulerLocal, Qt::AlignBottom);
     seriesEulerLocal->attachAxis(axisXEulerLocal);
     QValueAxis *axisYEulerLocal = new QValueAxis;
@@ -166,7 +182,7 @@ Form::Form(QWidget *parent)
     axisXEulerGlobal->setLineVisible(false);
     setGrid(axisXEulerGlobal);
     axisXEulerGlobal->setLabelsVisible(false);
-    axisXEulerGlobal->setRange(0.0, kTMin);
+    axisXEulerGlobal->setRange(0.0, 1.0);
     eulerGlobalChart->addAxis(axisXEulerGlobal, Qt::AlignBottom);
     seriesEulerGlobal->attachAxis(axisXEulerGlobal);
     QValueAxis *axisYEulerGlobal = new QValueAxis;
@@ -271,10 +287,66 @@ void Form::initiateState()
     delete param;
     param = new Parameters(spinBoxSizeT->value(), spinBoxNT->value());
 
+    EquationType type = comboBoxEquation->currentData().value<EquationType>();
+
+    QList<QPointF> ideal;
+    for (int n = 0; n <= kIdealPoints; ++n)
+    {
+        double t = param->get_tmax() / kIdealPoints * n;
+        ideal << QPointF(t / param->get_tmax(), direct(t, type));
+    }
+
+    seriesEulerIdeal->clear();
+    seriesEulerIdeal->append(ideal);
+    seriesLeapfrogIdeal->clear();
+    seriesLeapfrogIdeal->append(ideal);
+    seriesTwostepIdeal->clear();
+    seriesTwostepIdeal->append(ideal);
+    seriesRungekuttaIdeal->clear();
+    seriesRungekuttaIdeal->append(ideal);
+
+    seriesEulerSolution->clear();
+    seriesLeapfrogSolution->clear();
+    seriesTwostepSolution->clear();
+    seriesRungekuttaSolution->clear();
+
+    seriesEulerLocal->clear();
+    seriesLeapfrogLocal->clear();
+    seriesTwostepLocal->clear();
+    seriesRungekuttaLocal->clear();
+
+    seriesEulerGlobal->clear();
+    seriesLeapfrogGlobal->clear();
+    seriesTwostepGlobal->clear();
+    seriesRungekuttaGlobal->clear();
+
+    double yaxis_max = 0.0, yaxis_min = 0.0;
+    switch (type)
+    {
+    case Decay:
+        yaxis_max = 1.5;
+        yaxis_min = -0.5;
+        break;
+    case Grow:
+        yaxis_max = 3;
+        yaxis_min = 0.0;
+        break;
+    case Oscillate:
+        yaxis_max = 1.5;
+        yaxis_min = -1.5;
+        break;
+    }
+    eulerSolution->chart()->axisY()->setRange(yaxis_min, yaxis_max);/*
+    leapfrogSolution->chart()->axisY()->setRange(yaxis_min, yaxis_max);
+    twostepSolution->chart()->axisY()->setRange(yaxis_min, yaxis_max);
+    rungekuttaSolution->chart()->axisY()->setRange(yaxis_min, yaxis_max);*/
+
     updateLabels();
+    updateSolution();
 }
 
 void Form::updateSolution()
 {
     method_ = static_cast<MethodType>(tabWidgetMethods->currentIndex());
+
 }
