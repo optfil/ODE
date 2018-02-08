@@ -34,7 +34,7 @@ static std::complex<double> func(std::complex<double> y, double /* t */, Form::E
     return 0.0;
 }
 
-static void setGrid(QValueAxis* ax)
+static void setGrid(QAbstractAxis* ax)
 {
     ax->setGridLineVisible(true);
     QPen pen = ax->gridLinePen();
@@ -181,11 +181,11 @@ Form::Form(QWidget *parent)
     axisXEulerLocal->setRange(0.0, 1.0);
     eulerLocalChart->addAxis(axisXEulerLocal, Qt::AlignBottom);
     seriesEulerLocal->attachAxis(axisXEulerLocal);
-    QValueAxis *axisYEulerLocal = new QValueAxis;
+    QLogValueAxis *axisYEulerLocal = new QLogValueAxis;
     axisYEulerLocal->setLineVisible(false);
     setGrid(axisYEulerLocal);
-    axisYEulerLocal->setLabelsVisible(false);
-    axisYEulerLocal->setRange(0.0, 1.003);
+    axisYEulerLocal->setRange(1e-7, 1e-0);
+    axisYEulerLocal->setLabelFormat("%.0e");
     eulerLocalChart->addAxis(axisYEulerLocal, Qt::AlignLeft);
     seriesEulerLocal->attachAxis(axisYEulerLocal);
 
@@ -198,7 +198,7 @@ Form::Form(QWidget *parent)
     eulerGlobalChart->setTitle(tr("Global error"));
     eulerGlobalChart->legend()->hide();
 
-    QValueAxis *axisXEulerGlobal= new QValueAxis;
+    QValueAxis *axisXEulerGlobal = new QValueAxis;
     axisXEulerGlobal->setLineVisible(false);
     setGrid(axisXEulerGlobal);
     axisXEulerGlobal->setLabelsVisible(false);
@@ -264,11 +264,11 @@ Form::Form(QWidget *parent)
     axisXLeapfrogLocal->setRange(0.0, 1.0);
     leapfrogLocalChart->addAxis(axisXLeapfrogLocal, Qt::AlignBottom);
     seriesLeapfrogLocal->attachAxis(axisXLeapfrogLocal);
-    QValueAxis *axisYLeapfrogLocal = new QValueAxis;
+    QLogValueAxis *axisYLeapfrogLocal = new QLogValueAxis;
     axisYLeapfrogLocal->setLineVisible(false);
     setGrid(axisYLeapfrogLocal);
-    axisYLeapfrogLocal->setLabelsVisible(false);
-    axisYLeapfrogLocal->setRange(0.0, 1.003);
+    axisYLeapfrogLocal->setRange(1e-7, 1e-0);
+    axisYLeapfrogLocal->setLabelFormat("%.0e");
     leapfrogLocalChart->addAxis(axisYLeapfrogLocal, Qt::AlignLeft);
     seriesLeapfrogLocal->attachAxis(axisYLeapfrogLocal);
 
@@ -347,11 +347,11 @@ Form::Form(QWidget *parent)
     axisXTwostepLocal->setRange(0.0, 1.0);
     twostepLocalChart->addAxis(axisXTwostepLocal, Qt::AlignBottom);
     seriesTwostepLocal->attachAxis(axisXTwostepLocal);
-    QValueAxis *axisYTwostepLocal = new QValueAxis;
+    QLogValueAxis *axisYTwostepLocal = new QLogValueAxis;
     axisYTwostepLocal->setLineVisible(false);
     setGrid(axisYTwostepLocal);
-    axisYTwostepLocal->setLabelsVisible(false);
-    axisYTwostepLocal->setRange(0.0, 1.003);
+    axisYTwostepLocal->setRange(1e-7, 1e-0);
+    axisYTwostepLocal->setLabelFormat("%.0e");
     twostepLocalChart->addAxis(axisYTwostepLocal, Qt::AlignLeft);
     seriesTwostepLocal->attachAxis(axisYTwostepLocal);
 
@@ -430,11 +430,11 @@ Form::Form(QWidget *parent)
     axisXRungekuttaLocal->setRange(0.0, 1.0);
     rungekuttaLocalChart->addAxis(axisXRungekuttaLocal, Qt::AlignBottom);
     seriesRungekuttaLocal->attachAxis(axisXRungekuttaLocal);
-    QValueAxis *axisYRungekuttaLocal = new QValueAxis;
+    QLogValueAxis *axisYRungekuttaLocal = new QLogValueAxis;
     axisYRungekuttaLocal->setLineVisible(false);
     setGrid(axisYRungekuttaLocal);
-    axisYRungekuttaLocal->setLabelsVisible(false);
-    axisYRungekuttaLocal->setRange(0.0, 1.003);
+    axisYRungekuttaLocal->setRange(1e-7, 1e-0);
+    axisYRungekuttaLocal->setLabelFormat("%.0e");
     rungekuttaLocalChart->addAxis(axisYRungekuttaLocal, Qt::AlignLeft);
     seriesRungekuttaLocal->attachAxis(axisYRungekuttaLocal);
 
@@ -640,11 +640,6 @@ void Form::Solve()
     seriesTwostepSolution->append(t_cur_ / param->get_tmax(), std::real(twostep_y_));
     seriesRungekuttaSolution->append(t_cur_ / param->get_tmax(), std::real(rungekutta_y_));
 
-    seriesEulerLocal->append(t_cur_, 0.0);
-    seriesLeapfrogLocal->append(t_cur_, 0.0);
-    seriesTwostepLocal->append(t_cur_, 0.0);
-    seriesRungekuttaLocal->append(t_cur_, 0.0);
-
     timer->start();
 }
 
@@ -674,10 +669,10 @@ void Form::Tick()
         seriesTwostepSolution->append(t_cur_ / param->get_tmax(), std::real(twostep_y_));
         seriesRungekuttaSolution->append(t_cur_ / param->get_tmax(), std::real(rungekutta_y_));
 
-        seriesEulerLocal->append(t_cur_ / param->get_tmax(), std::abs(euler_y_ - direct(t_cur_, eq_type_)));
-        seriesLeapfrogLocal->append(t_cur_ / param->get_tmax(), std::abs(leapfrog_y_ - direct(t_cur_, eq_type_)));
-        seriesTwostepLocal->append(t_cur_ / param->get_tmax(), std::abs(twostep_y_ - direct(t_cur_, eq_type_)));
-        seriesRungekuttaLocal->append(t_cur_ / param->get_tmax(), std::abs(rungekutta_y_ - direct(t_cur_, eq_type_)));
+        seriesEulerLocal->append(t_cur_ / param->get_tmax(), std::abs(std::real(euler_y_) - direct(t_cur_, eq_type_)));
+        seriesLeapfrogLocal->append(t_cur_ / param->get_tmax(), std::abs(std::real(leapfrog_y_) - direct(t_cur_, eq_type_)));
+        seriesTwostepLocal->append(t_cur_ / param->get_tmax(), std::abs(std::real(twostep_y_) - direct(t_cur_, eq_type_)));
+        seriesRungekuttaLocal->append(t_cur_ / param->get_tmax(), std::abs(std::real(rungekutta_y_) - direct(t_cur_, eq_type_)));
     }
     else
     {
