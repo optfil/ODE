@@ -6,6 +6,15 @@
 
 #include <QDebug>
 
+static QColor blendColors(const QColor& color1, const QColor& color2, qreal ratio = 0.5)
+{
+    int r = color1.red()*(1-ratio) + color2.red()*ratio;
+    int g = color1.green()*(1-ratio) + color2.green()*ratio;
+    int b = color1.blue()*(1-ratio) + color2.blue()*ratio;
+
+    return QColor(r, g, b, 255);
+}
+
 static double direct(double t, Form::EquationType type)
 {
     switch (type)
@@ -277,6 +286,10 @@ Form::Form(QWidget *parent)
     tabWidgetMethods->addTab(leapfrogWidget, tr("Leap frog"));
     tabWidgetMethods->addTab(twostepWidget, tr("Two-step"));
     tabWidgetMethods->addTab(rungekuttaWidget, tr("Runge-Kutta"));
+    tabWidgetMethods->tabBar()->setTabTextColor(0, blendColors(Qt::red, Qt::black));
+    tabWidgetMethods->tabBar()->setTabTextColor(1, blendColors(Qt::green, Qt::black));
+    tabWidgetMethods->tabBar()->setTabTextColor(2, blendColors(Qt::blue, Qt::black));
+    tabWidgetMethods->tabBar()->setTabTextColor(3, blendColors(Qt::magenta, Qt::black));
 
     QChart *localErrorChart = new QChart();
     localErrorChart->addSeries(seriesEulerLocal);
@@ -425,15 +438,15 @@ void Form::updateLabels()
 
 void Form::selectMethod(int n)
 {
-    seriesEulerLocal->setOpacity(n == 0 ? 1.0 : 0.3);
-    seriesLeapfrogLocal->setOpacity(n == 1 ? 1.0 : 0.3);
-    seriesTwostepLocal->setOpacity(n == 2 ? 1.0 : 0.3);
-    seriesRungekuttaLocal->setOpacity(n == 3 ? 1.0 : 0.3);
+    seriesEulerLocal->setOpacity(n == 0 ? 1.0 : 0.4);
+    seriesLeapfrogLocal->setOpacity(n == 1 ? 1.0 : 0.4);
+    seriesTwostepLocal->setOpacity(n == 2 ? 1.0 : 0.4);
+    seriesRungekuttaLocal->setOpacity(n == 3 ? 1.0 : 0.4);
 
-    seriesEulerGlobal->setOpacity(n == 0 ? 1.0 : 0.3);
-    seriesLeapfrogGlobal->setOpacity(n == 1 ? 1.0 : 0.3);
-    seriesTwostepGlobal->setOpacity(n == 2 ? 1.0 : 0.3);
-    seriesRungekuttaGlobal->setOpacity(n == 3 ? 1.0 : 0.3);
+    seriesEulerGlobal->setOpacity(n == 0 ? 1.0 : 0.4);
+    seriesLeapfrogGlobal->setOpacity(n == 1 ? 1.0 : 0.4);
+    seriesTwostepGlobal->setOpacity(n == 2 ? 1.0 : 0.4);
+    seriesRungekuttaGlobal->setOpacity(n == 3 ? 1.0 : 0.4);
 }
 
 void Form::updateGUI()
