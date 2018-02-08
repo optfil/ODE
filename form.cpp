@@ -44,7 +44,7 @@ static void setGrid(QValueAxis* ax)
 }
 
 Form::Form(QWidget *parent)
-    : QWidget(parent), param(nullptr), t_cur_(0.0), euler_y_(1.0, 0.0)
+    : QWidget(parent), param(nullptr), t_cur_(0.0), euler_y_(1.0, 0.0), twostep_y_(1.0, 0.0)
 {
     timer = new QTimer();
     timer->setInterval(30);
@@ -615,12 +615,12 @@ void Form::initiateState()
 {
     t_cur_ = 0.0;
     euler_y_ = std::complex<double>(1.0, 0.0);
+    twostep_y_ = std::complex<double>(1.0, 0.0);
 }
 
 void Form::Solve()
 {
     pushButtonSolve->setEnabled(false);
-    tabWidgetMethods->setEnabled(false);
     comboBoxEquation->setEnabled(false);
     spinBoxSizeT->setEnabled(false);
     spinBoxNT->setEnabled(false);
@@ -645,7 +645,11 @@ void Form::Tick()
         double new_t = t_cur_ + param->get_tstep();
         euler_y_ += func(euler_y_, t_cur_, eq_type_) * param->get_tstep();
 
+        std::complex<double> twostep_tmp_ = twostep_y_ + 0.5 * param->get_tstep() * func(twostep_y_, t_cur_, eq_type_);
+        twostep_y_ += param->get_tstep() * func(twostep_tmp_, t_cur_ + 0.5*param->get_tstep(), eq_type_);
+
         seriesEulerSolution->append(new_t / param->get_tmax(), std::real(euler_y_));
+        seriesTwostepSolution->append(new_t / param->get_tmax(), std::real(twostep_y_));
 
         t_cur_ = new_t;
     }
@@ -653,7 +657,6 @@ void Form::Tick()
     {
         timer->stop();
         pushButtonSolve->setEnabled(true);
-        tabWidgetMethods->setEnabled(true);
         comboBoxEquation->setEnabled(true);
         spinBoxSizeT->setEnabled(true);
         spinBoxNT->setEnabled(true);

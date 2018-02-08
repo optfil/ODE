@@ -70,7 +70,7 @@ private:
     EquationType eq_type_;
     Parameters *param;
     double t_cur_;
-    std::complex<double> euler_y_;
+    std::complex<double> euler_y_, twostep_y_;
 };
 
 #endif // FORM_H
