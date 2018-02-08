@@ -204,8 +204,253 @@ Form::Form(QWidget *parent)
     eulerWidget->setLayout(layoutEuler);
 
     QWidget *leapfrogWidget = new QWidget();
+
+    QChart *leapfrogSolutionChart = new QChart();
+    leapfrogSolutionChart->addSeries(seriesLeapfrogIdeal);
+    leapfrogSolutionChart->addSeries(seriesLeapfrogSolution);
+    leapfrogSolutionChart->setTitle(tr("Solution"));
+    leapfrogSolutionChart->legend()->hide();
+
+    QValueAxis *axisXLeapfrogSolution = new QValueAxis;
+    axisXLeapfrogSolution->setLineVisible(false);
+    setGrid(axisXLeapfrogSolution);
+    axisXLeapfrogSolution->setLabelsVisible(false);
+    axisXLeapfrogSolution->setRange(0.0, 1.0);
+    leapfrogSolutionChart->addAxis(axisXLeapfrogSolution, Qt::AlignBottom);
+    seriesLeapfrogIdeal->attachAxis(axisXLeapfrogSolution);
+    seriesLeapfrogSolution->attachAxis(axisXLeapfrogSolution);
+    QValueAxis *axisYLeapfrogSolution = new QValueAxis;
+    axisYLeapfrogSolution->setLineVisible(false);
+    setGrid(axisYLeapfrogSolution);
+    axisYLeapfrogSolution->setLabelsVisible(false);
+    axisYLeapfrogSolution->setRange(0.0, 1.003);
+    leapfrogSolutionChart->addAxis(axisYLeapfrogSolution, Qt::AlignLeft);
+    seriesLeapfrogIdeal->attachAxis(axisYLeapfrogSolution);
+    seriesLeapfrogSolution->attachAxis(axisYLeapfrogSolution);
+
+    leapfrogSolution = new QChartView();
+    leapfrogSolution->setRenderHint(QPainter::Antialiasing);
+    leapfrogSolution->setChart(leapfrogSolutionChart);
+
+    QChart *leapfrogLocalChart = new QChart();
+    leapfrogLocalChart->addSeries(seriesLeapfrogLocal);
+    leapfrogLocalChart->setTitle(tr("Local error"));
+    leapfrogLocalChart->legend()->hide();
+
+    QValueAxis *axisXLeapfrogLocal= new QValueAxis;
+    axisXLeapfrogLocal->setLineVisible(false);
+    setGrid(axisXLeapfrogLocal);
+    axisXLeapfrogLocal->setLabelsVisible(false);
+    axisXLeapfrogLocal->setRange(0.0, 1.0);
+    leapfrogLocalChart->addAxis(axisXLeapfrogLocal, Qt::AlignBottom);
+    seriesLeapfrogLocal->attachAxis(axisXLeapfrogLocal);
+    QValueAxis *axisYLeapfrogLocal = new QValueAxis;
+    axisYLeapfrogLocal->setLineVisible(false);
+    setGrid(axisYLeapfrogLocal);
+    axisYLeapfrogLocal->setLabelsVisible(false);
+    axisYLeapfrogLocal->setRange(0.0, 1.003);
+    leapfrogLocalChart->addAxis(axisYLeapfrogLocal, Qt::AlignLeft);
+    seriesLeapfrogLocal->attachAxis(axisYLeapfrogLocal);
+
+    leapfrogLocal = new QChartView();
+    leapfrogLocal->setRenderHint(QPainter::Antialiasing);
+    leapfrogLocal->setChart(leapfrogLocalChart);
+
+    QChart *leapfrogGlobalChart = new QChart();
+    leapfrogGlobalChart->addSeries(seriesLeapfrogGlobal);
+    leapfrogGlobalChart->setTitle(tr("Global error"));
+    leapfrogGlobalChart->legend()->hide();
+
+    QValueAxis *axisXLeapfrogGlobal= new QValueAxis;
+    axisXLeapfrogGlobal->setLineVisible(false);
+    setGrid(axisXLeapfrogGlobal);
+    axisXLeapfrogGlobal->setLabelsVisible(false);
+    axisXLeapfrogGlobal->setRange(0.0, 1.0);
+    leapfrogGlobalChart->addAxis(axisXLeapfrogGlobal, Qt::AlignBottom);
+    seriesLeapfrogGlobal->attachAxis(axisXLeapfrogGlobal);
+    QValueAxis *axisYLeapfrogGlobal = new QValueAxis;
+    axisYLeapfrogGlobal->setLineVisible(false);
+    setGrid(axisYLeapfrogGlobal);
+    axisYLeapfrogGlobal->setLabelsVisible(false);
+    axisYLeapfrogGlobal->setRange(0.0, 1.003);
+    leapfrogGlobalChart->addAxis(axisYLeapfrogGlobal, Qt::AlignLeft);
+    seriesLeapfrogGlobal->attachAxis(axisYLeapfrogGlobal);
+
+    leapfrogGlobal = new QChartView();
+    leapfrogGlobal->setRenderHint(QPainter::Antialiasing);
+    leapfrogGlobal->setChart(leapfrogGlobalChart);
+
+    QVBoxLayout *layoutLeapfrog = new QVBoxLayout();
+    layoutLeapfrog->addWidget(leapfrogSolution);
+    layoutLeapfrog->addWidget(leapfrogLocal);
+    layoutLeapfrog->addWidget(leapfrogGlobal);
+    leapfrogWidget->setLayout(layoutLeapfrog);
+
     QWidget *twostepWidget = new QWidget();
+
+    QChart *twostepSolutionChart = new QChart();
+    twostepSolutionChart->addSeries(seriesTwostepIdeal);
+    twostepSolutionChart->addSeries(seriesTwostepSolution);
+    twostepSolutionChart->setTitle(tr("Solution"));
+    twostepSolutionChart->legend()->hide();
+
+    QValueAxis *axisXTwostepSolution = new QValueAxis;
+    axisXTwostepSolution->setLineVisible(false);
+    setGrid(axisXTwostepSolution);
+    axisXTwostepSolution->setLabelsVisible(false);
+    axisXTwostepSolution->setRange(0.0, 1.0);
+    twostepSolutionChart->addAxis(axisXTwostepSolution, Qt::AlignBottom);
+    seriesTwostepIdeal->attachAxis(axisXTwostepSolution);
+    seriesTwostepSolution->attachAxis(axisXTwostepSolution);
+    QValueAxis *axisYTwostepSolution = new QValueAxis;
+    axisYTwostepSolution->setLineVisible(false);
+    setGrid(axisYTwostepSolution);
+    axisYTwostepSolution->setLabelsVisible(false);
+    axisYTwostepSolution->setRange(0.0, 1.003);
+    twostepSolutionChart->addAxis(axisYTwostepSolution, Qt::AlignLeft);
+    seriesTwostepIdeal->attachAxis(axisYTwostepSolution);
+    seriesTwostepSolution->attachAxis(axisYTwostepSolution);
+
+    twostepSolution = new QChartView();
+    twostepSolution->setRenderHint(QPainter::Antialiasing);
+    twostepSolution->setChart(twostepSolutionChart);
+
+    QChart *twostepLocalChart = new QChart();
+    twostepLocalChart->addSeries(seriesTwostepLocal);
+    twostepLocalChart->setTitle(tr("Local error"));
+    twostepLocalChart->legend()->hide();
+
+    QValueAxis *axisXTwostepLocal= new QValueAxis;
+    axisXTwostepLocal->setLineVisible(false);
+    setGrid(axisXTwostepLocal);
+    axisXTwostepLocal->setLabelsVisible(false);
+    axisXTwostepLocal->setRange(0.0, 1.0);
+    twostepLocalChart->addAxis(axisXTwostepLocal, Qt::AlignBottom);
+    seriesTwostepLocal->attachAxis(axisXTwostepLocal);
+    QValueAxis *axisYTwostepLocal = new QValueAxis;
+    axisYTwostepLocal->setLineVisible(false);
+    setGrid(axisYTwostepLocal);
+    axisYTwostepLocal->setLabelsVisible(false);
+    axisYTwostepLocal->setRange(0.0, 1.003);
+    twostepLocalChart->addAxis(axisYTwostepLocal, Qt::AlignLeft);
+    seriesTwostepLocal->attachAxis(axisYTwostepLocal);
+
+    twostepLocal = new QChartView();
+    twostepLocal->setRenderHint(QPainter::Antialiasing);
+    twostepLocal->setChart(twostepLocalChart);
+
+    QChart *twostepGlobalChart = new QChart();
+    twostepGlobalChart->addSeries(seriesTwostepGlobal);
+    twostepGlobalChart->setTitle(tr("Global error"));
+    twostepGlobalChart->legend()->hide();
+
+    QValueAxis *axisXTwostepGlobal= new QValueAxis;
+    axisXTwostepGlobal->setLineVisible(false);
+    setGrid(axisXTwostepGlobal);
+    axisXTwostepGlobal->setLabelsVisible(false);
+    axisXTwostepGlobal->setRange(0.0, 1.0);
+    twostepGlobalChart->addAxis(axisXTwostepGlobal, Qt::AlignBottom);
+    seriesTwostepGlobal->attachAxis(axisXTwostepGlobal);
+    QValueAxis *axisYTwostepGlobal = new QValueAxis;
+    axisYTwostepGlobal->setLineVisible(false);
+    setGrid(axisYTwostepGlobal);
+    axisYTwostepGlobal->setLabelsVisible(false);
+    axisYTwostepGlobal->setRange(0.0, 1.003);
+    twostepGlobalChart->addAxis(axisYTwostepGlobal, Qt::AlignLeft);
+    seriesTwostepGlobal->attachAxis(axisYTwostepGlobal);
+
+    twostepGlobal = new QChartView();
+    twostepGlobal->setRenderHint(QPainter::Antialiasing);
+    twostepGlobal->setChart(twostepGlobalChart);
+
+    QVBoxLayout *layoutTwostep = new QVBoxLayout();
+    layoutTwostep->addWidget(twostepSolution);
+    layoutTwostep->addWidget(twostepLocal);
+    layoutTwostep->addWidget(twostepGlobal);
+    twostepWidget->setLayout(layoutTwostep);
+
     QWidget *rungekuttaWidget = new QWidget();
+
+    QChart *rungekuttaSolutionChart = new QChart();
+    rungekuttaSolutionChart->addSeries(seriesRungekuttaIdeal);
+    rungekuttaSolutionChart->addSeries(seriesRungekuttaSolution);
+    rungekuttaSolutionChart->setTitle(tr("Solution"));
+    rungekuttaSolutionChart->legend()->hide();
+
+    QValueAxis *axisXRungekuttaSolution = new QValueAxis;
+    axisXRungekuttaSolution->setLineVisible(false);
+    setGrid(axisXRungekuttaSolution);
+    axisXRungekuttaSolution->setLabelsVisible(false);
+    axisXRungekuttaSolution->setRange(0.0, 1.0);
+    rungekuttaSolutionChart->addAxis(axisXRungekuttaSolution, Qt::AlignBottom);
+    seriesRungekuttaIdeal->attachAxis(axisXRungekuttaSolution);
+    seriesRungekuttaSolution->attachAxis(axisXRungekuttaSolution);
+    QValueAxis *axisYRungekuttaSolution = new QValueAxis;
+    axisYRungekuttaSolution->setLineVisible(false);
+    setGrid(axisYRungekuttaSolution);
+    axisYRungekuttaSolution->setLabelsVisible(false);
+    axisYRungekuttaSolution->setRange(0.0, 1.003);
+    rungekuttaSolutionChart->addAxis(axisYRungekuttaSolution, Qt::AlignLeft);
+    seriesRungekuttaIdeal->attachAxis(axisYRungekuttaSolution);
+    seriesRungekuttaSolution->attachAxis(axisYRungekuttaSolution);
+
+    rungekuttaSolution = new QChartView();
+    rungekuttaSolution->setRenderHint(QPainter::Antialiasing);
+    rungekuttaSolution->setChart(rungekuttaSolutionChart);
+
+    QChart *rungekuttaLocalChart = new QChart();
+    rungekuttaLocalChart->addSeries(seriesRungekuttaLocal);
+    rungekuttaLocalChart->setTitle(tr("Local error"));
+    rungekuttaLocalChart->legend()->hide();
+
+    QValueAxis *axisXRungekuttaLocal= new QValueAxis;
+    axisXRungekuttaLocal->setLineVisible(false);
+    setGrid(axisXRungekuttaLocal);
+    axisXRungekuttaLocal->setLabelsVisible(false);
+    axisXRungekuttaLocal->setRange(0.0, 1.0);
+    rungekuttaLocalChart->addAxis(axisXRungekuttaLocal, Qt::AlignBottom);
+    seriesRungekuttaLocal->attachAxis(axisXRungekuttaLocal);
+    QValueAxis *axisYRungekuttaLocal = new QValueAxis;
+    axisYRungekuttaLocal->setLineVisible(false);
+    setGrid(axisYRungekuttaLocal);
+    axisYRungekuttaLocal->setLabelsVisible(false);
+    axisYRungekuttaLocal->setRange(0.0, 1.003);
+    rungekuttaLocalChart->addAxis(axisYRungekuttaLocal, Qt::AlignLeft);
+    seriesRungekuttaLocal->attachAxis(axisYRungekuttaLocal);
+
+    rungekuttaLocal = new QChartView();
+    rungekuttaLocal->setRenderHint(QPainter::Antialiasing);
+    rungekuttaLocal->setChart(rungekuttaLocalChart);
+
+    QChart *rungekuttaGlobalChart = new QChart();
+    rungekuttaGlobalChart->addSeries(seriesRungekuttaGlobal);
+    rungekuttaGlobalChart->setTitle(tr("Global error"));
+    rungekuttaGlobalChart->legend()->hide();
+
+    QValueAxis *axisXRungekuttaGlobal= new QValueAxis;
+    axisXRungekuttaGlobal->setLineVisible(false);
+    setGrid(axisXRungekuttaGlobal);
+    axisXRungekuttaGlobal->setLabelsVisible(false);
+    axisXRungekuttaGlobal->setRange(0.0, 1.0);
+    rungekuttaGlobalChart->addAxis(axisXRungekuttaGlobal, Qt::AlignBottom);
+    seriesRungekuttaGlobal->attachAxis(axisXRungekuttaGlobal);
+    QValueAxis *axisYRungekuttaGlobal = new QValueAxis;
+    axisYRungekuttaGlobal->setLineVisible(false);
+    setGrid(axisYRungekuttaGlobal);
+    axisYRungekuttaGlobal->setLabelsVisible(false);
+    axisYRungekuttaGlobal->setRange(0.0, 1.003);
+    rungekuttaGlobalChart->addAxis(axisYRungekuttaGlobal, Qt::AlignLeft);
+    seriesRungekuttaGlobal->attachAxis(axisYRungekuttaGlobal);
+
+    rungekuttaGlobal = new QChartView();
+    rungekuttaGlobal->setRenderHint(QPainter::Antialiasing);
+    rungekuttaGlobal->setChart(rungekuttaGlobalChart);
+
+    QVBoxLayout *layoutRungekutta = new QVBoxLayout();
+    layoutRungekutta->addWidget(rungekuttaSolution);
+    layoutRungekutta->addWidget(rungekuttaLocal);
+    layoutRungekutta->addWidget(rungekuttaGlobal);
+    rungekuttaWidget->setLayout(layoutRungekutta);
 
     tabWidgetMethods = new QTabWidget();
     tabWidgetMethods->addTab(eulerWidget, tr("Euler"));
@@ -328,7 +573,7 @@ void Form::initiateState()
         yaxis_min = -0.5;
         break;
     case Grow:
-        yaxis_max = 3;
+        yaxis_max = std::min(std::exp(param->get_tmax()), 15.0);
         yaxis_min = 0.0;
         break;
     case Oscillate:
@@ -336,10 +581,10 @@ void Form::initiateState()
         yaxis_min = -1.5;
         break;
     }
-    eulerSolution->chart()->axisY()->setRange(yaxis_min, yaxis_max);/*
+    eulerSolution->chart()->axisY()->setRange(yaxis_min, yaxis_max);
     leapfrogSolution->chart()->axisY()->setRange(yaxis_min, yaxis_max);
     twostepSolution->chart()->axisY()->setRange(yaxis_min, yaxis_max);
-    rungekuttaSolution->chart()->axisY()->setRange(yaxis_min, yaxis_max);*/
+    rungekuttaSolution->chart()->axisY()->setRange(yaxis_min, yaxis_max);
 
     updateLabels();
     updateSolution();
