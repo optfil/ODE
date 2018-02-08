@@ -477,7 +477,8 @@ Form::Form(QWidget *parent)
     layoutParam->addWidget(labelDT_1, 3, 0, 1, 1);
     layoutParam->addWidget(labelDT_2, 3, 1, 1, 1);
     layoutParam->addWidget(labelDT, 3, 2, 1, 1);
-    layoutParam->addWidget(pushButtonSolve, 4, 1, 1, 2);
+    layoutParam->addWidget(pushButtonSolve, 4, 1, 1, 2, Qt::AlignTop);
+    layoutParam->setRowStretch(4, 1);
 
     QHBoxLayout *layoutMain = new QHBoxLayout();
     layoutMain->addLayout(layoutParam);
@@ -490,7 +491,6 @@ Form::Form(QWidget *parent)
     connect(sliderNT, SIGNAL(valueChanged(int)), this, SLOT(update_nt(int)));
     connect(spinBoxSizeT, SIGNAL(valueChanged(int)), this, SLOT(update_sizet(int)));
     connect(spinBoxNT, SIGNAL(valueChanged(int)), this, SLOT(update_nt(int)));
-    connect(tabWidgetMethods, SIGNAL(currentChanged(int)), this, SLOT(updateSolution()));
     connect(pushButtonSolve, SIGNAL(clicked(bool)), this, SLOT(Solve()));
     connect(timer, SIGNAL(timeout()), this, SLOT(Tick()));
 
@@ -540,6 +540,7 @@ void Form::initiateState()
     delete param;
     param = new Parameters(spinBoxSizeT->value(), spinBoxNT->value());
 
+    method_ = static_cast<MethodType>(tabWidgetMethods->currentIndex());
     EquationType type = comboBoxEquation->currentData().value<EquationType>();
 
     QList<QPointF> ideal;
@@ -595,18 +596,39 @@ void Form::initiateState()
     rungekuttaSolution->chart()->axisY()->setRange(yaxis_min, yaxis_max);
 
     updateLabels();
-    updateSolution();
-}
-
-void Form::updateSolution()
-{
-    method_ = static_cast<MethodType>(tabWidgetMethods->currentIndex());
 }
 
 void Form::Solve()
 {
+    pushButtonSolve->setEnabled(false);
+    tabWidgetMethods->setEnabled(false);
+    comboBoxEquation->setEnabled(false);
+    spinBoxSizeT->setEnabled(false);
+    spinBoxNT->setEnabled(false);
+    sliderSizeT->setEnabled(false);
+    sliderNT->setEnabled(false);
+
+    initiateState();
+
+    t_cur_ = 0.0;
+    timer->start();
 }
 
 void Form::Tick()
 {
+    if (t_cur_ < param->get_tmax() + 1e-3*param->get_tstep())
+    {
+        t_cur_ += param->get_tstep();
+    }
+    else
+    {
+        timer->stop();
+        pushButtonSolve->setEnabled(true);
+        tabWidgetMethods->setEnabled(true);
+        comboBoxEquation->setEnabled(true);
+        spinBoxSizeT->setEnabled(true);
+        spinBoxNT->setEnabled(true);
+        sliderSizeT->setEnabled(true);
+        sliderNT->setEnabled(true);
+    }
 }

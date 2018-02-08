@@ -41,7 +41,6 @@ private slots:
     void update_sizet(int n);
     void updateLabels();
     void initiateState();
-    void updateSolution();
     void Solve();
     void Tick();
 
