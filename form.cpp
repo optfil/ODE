@@ -32,6 +32,9 @@ static void setGrid(QValueAxis* ax)
 Form::Form(QWidget *parent)
     : QWidget(parent), param(nullptr), t_cur_(0.0)
 {
+    timer = new QTimer();
+    timer->setInterval(30);
+
     seriesEulerIdeal = new QLineSeries();
     seriesEulerIdeal->setColor(Qt::blue);
     seriesEulerIdeal->setPen(QPen(seriesEulerIdeal->pen().brush(), 3));
@@ -119,6 +122,8 @@ Form::Form(QWidget *parent)
     labelDT_2->setAlignment(Qt::AlignRight | Qt::AlignTop);
     labelDT = new QLabel();
     labelDT->setAlignment(Qt::AlignTop);
+
+    pushButtonSolve = new QPushButton(tr("Start"));
 
     QWidget *eulerWidget = new QWidget();
 
@@ -472,6 +477,7 @@ Form::Form(QWidget *parent)
     layoutParam->addWidget(labelDT_1, 3, 0, 1, 1);
     layoutParam->addWidget(labelDT_2, 3, 1, 1, 1);
     layoutParam->addWidget(labelDT, 3, 2, 1, 1);
+    layoutParam->addWidget(pushButtonSolve, 4, 1, 1, 2);
 
     QHBoxLayout *layoutMain = new QHBoxLayout();
     layoutMain->addLayout(layoutParam);
@@ -485,6 +491,8 @@ Form::Form(QWidget *parent)
     connect(spinBoxSizeT, SIGNAL(valueChanged(int)), this, SLOT(update_sizet(int)));
     connect(spinBoxNT, SIGNAL(valueChanged(int)), this, SLOT(update_nt(int)));
     connect(tabWidgetMethods, SIGNAL(currentChanged(int)), this, SLOT(updateSolution()));
+    connect(pushButtonSolve, SIGNAL(clicked(bool)), this, SLOT(Solve()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(Tick()));
 
     initiateState();
 }
@@ -593,5 +601,12 @@ void Form::initiateState()
 void Form::updateSolution()
 {
     method_ = static_cast<MethodType>(tabWidgetMethods->currentIndex());
+}
 
+void Form::Solve()
+{
+}
+
+void Form::Tick()
+{
 }

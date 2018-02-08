@@ -2,11 +2,13 @@
 #define FORM_H
 
 #include <QWidget>
-#include <QLabel>
 #include <QComboBox>
+#include <QLabel>
+#include <QPushButton>
 #include <QSlider>
 #include <QSpinBox>
 #include <QTabWidget>
+#include <QTimer>
 
 #include <QtCharts/QtCharts>
 QT_CHARTS_USE_NAMESPACE
@@ -40,6 +42,8 @@ private slots:
     void updateLabels();
     void initiateState();
     void updateSolution();
+    void Solve();
+    void Tick();
 
 private:
     QLabel *labelEquation;
@@ -48,6 +52,7 @@ private:
     QSpinBox *spinBoxSizeT, *spinBoxNT;
     QSlider *sliderSizeT, *sliderNT;
     QLabel *labelDT_1, *labelDT_2, *labelDT;
+    QPushButton *pushButtonSolve;
     QTabWidget *tabWidgetMethods;
     QChartView *eulerSolution, *eulerLocal, *eulerGlobal;
     QChartView *leapfrogSolution, *leapfrogLocal, *leapfrogGlobal;
@@ -57,6 +62,8 @@ private:
     QLineSeries *seriesEulerSolution, *seriesLeapfrogSolution, *seriesTwostepSolution, *seriesRungekuttaSolution;
     QLineSeries *seriesEulerLocal, *seriesLeapfrogLocal, *seriesTwostepLocal, *seriesRungekuttaLocal;
     QLineSeries *seriesEulerGlobal, *seriesLeapfrogGlobal, *seriesTwostepGlobal, *seriesRungekuttaGlobal;
+
+    QTimer *timer;
 
     Parameters *param;
     double t_cur_;
