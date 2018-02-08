@@ -8,6 +8,9 @@
 #include <QSpinBox>
 #include <QTabWidget>
 
+#include <QtCharts/QtCharts>
+QT_CHARTS_USE_NAMESPACE
+
 #include "parameters.h"
 
 
@@ -45,6 +48,10 @@ private:
     QSlider *sliderSizeT, *sliderNT;
     QLabel *labelDT_1, *labelDT_2, *labelDT;
     QTabWidget *tabWidgetMethods;
+    QChartView *eulerSolution, *eulerLocal, *eulerGlobal;
+    QChartView *leapfrogSolution, *leapfrogLocal, *leapfrogGlobal;
+    QChartView *twostepSolution, *twostepLocal, *twostepGlobal;
+    QChartView *rungekuttaSolution, *rungekuttaLocal, *rungekuttaGlobal;
 
     Parameters *param;
     double t_cur_;

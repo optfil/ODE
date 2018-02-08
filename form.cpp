@@ -47,6 +47,40 @@ Form::Form(QWidget *parent)
     labelDT->setAlignment(Qt::AlignTop);
 
     QWidget *eulerWidget = new QWidget();
+
+    QChart *eulerSolutionChart = new QChart();
+    // add series
+    eulerSolutionChart->setTitle(tr("Solution"));
+    eulerSolutionChart->legend()->hide();
+    // add axis, grid
+    eulerSolution = new QChartView();
+    eulerSolution->setRenderHint(QPainter::Antialiasing);
+    eulerSolution->setChart(eulerSolutionChart);
+
+    QChart *eulerLocalChart = new QChart();
+    // add series
+    eulerLocalChart->setTitle(tr("Local error"));
+    eulerLocalChart->legend()->hide();
+    // add axis, grid
+    eulerLocal = new QChartView();
+    eulerLocal->setRenderHint(QPainter::Antialiasing);
+    eulerLocal->setChart(eulerLocalChart);
+
+    QChart *eulerGlobalChart = new QChart();
+    // add series
+    eulerGlobalChart->setTitle(tr("Global error"));
+    eulerGlobalChart->legend()->hide();
+    // add axis, grid
+    eulerGlobal = new QChartView();
+    eulerGlobal->setRenderHint(QPainter::Antialiasing);
+    eulerGlobal->setChart(eulerGlobalChart);
+
+    QVBoxLayout *layoutEuler = new QVBoxLayout();
+    layoutEuler->addWidget(eulerSolution);
+    layoutEuler->addWidget(eulerLocal);
+    layoutEuler->addWidget(eulerGlobal);
+    eulerWidget->setLayout(layoutEuler);
+
     QWidget *leapfrogWidget = new QWidget();
     QWidget *twostepWidget = new QWidget();
     QWidget *rungekuttaWidget = new QWidget();
