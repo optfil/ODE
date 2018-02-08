@@ -98,7 +98,8 @@ Form::Form(QWidget *parent)
     QWidget *eulerWidget = new QWidget();
 
     QChart *eulerSolutionChart = new QChart();
-    // add series
+    eulerSolutionChart->addSeries(seriesEulerIdeal);
+    eulerSolutionChart->addSeries(seriesEulerSolution);
     eulerSolutionChart->setTitle(tr("Solution"));
     eulerSolutionChart->legend()->hide();
     // add axis, grid
@@ -107,7 +108,7 @@ Form::Form(QWidget *parent)
     eulerSolution->setChart(eulerSolutionChart);
 
     QChart *eulerLocalChart = new QChart();
-    // add series
+    eulerLocalChart->addSeries(seriesEulerLocal);
     eulerLocalChart->setTitle(tr("Local error"));
     eulerLocalChart->legend()->hide();
     // add axis, grid
@@ -116,7 +117,7 @@ Form::Form(QWidget *parent)
     eulerLocal->setChart(eulerLocalChart);
 
     QChart *eulerGlobalChart = new QChart();
-    // add series
+    eulerGlobalChart->addSeries(seriesEulerGlobal);
     eulerGlobalChart->setTitle(tr("Global error"));
     eulerGlobalChart->legend()->hide();
     // add axis, grid
