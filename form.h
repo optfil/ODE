@@ -44,6 +44,7 @@ private slots:
     void updateLabels();
     void updateGUI();
     void initiateState();
+    void selectMethod(int n);
     void Solve();
     void Tick();
 
@@ -56,10 +57,8 @@ private:
     QLabel *labelDT_1, *labelDT_2, *labelDT;
     QPushButton *pushButtonSolve;
     QTabWidget *tabWidgetMethods;
-    QChartView *eulerSolution, *eulerLocal, *eulerGlobal;
-    QChartView *leapfrogSolution, *leapfrogLocal, *leapfrogGlobal;
-    QChartView *twostepSolution, *twostepLocal, *twostepGlobal;
-    QChartView *rungekuttaSolution, *rungekuttaLocal, *rungekuttaGlobal;
+    QChartView *eulerSolution, *leapfrogSolution, *twostepSolution, *rungekuttaSolution;
+    QChartView *localError, *globalError;
     QLineSeries *seriesEulerIdeal, *seriesLeapfrogIdeal, *seriesTwostepIdeal, *seriesRungekuttaIdeal;
     QLineSeries *seriesEulerSolution, *seriesLeapfrogSolution, *seriesTwostepSolution, *seriesRungekuttaSolution;
     QLineSeries *seriesEulerLocal, *seriesLeapfrogLocal, *seriesTwostepLocal, *seriesRungekuttaLocal;

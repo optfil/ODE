@@ -60,45 +60,39 @@
     </message>
     <message>
         <location filename="form.cpp" line="148"/>
-        <location filename="form.cpp" line="231"/>
-        <location filename="form.cpp" line="314"/>
-        <location filename="form.cpp" line="397"/>
+        <location filename="form.cpp" line="181"/>
+        <location filename="form.cpp" line="214"/>
+        <location filename="form.cpp" line="247"/>
         <source>Solution</source>
         <translation>Решение</translation>
     </message>
     <message>
-        <location filename="form.cpp" line="174"/>
-        <location filename="form.cpp" line="257"/>
-        <location filename="form.cpp" line="340"/>
-        <location filename="form.cpp" line="423"/>
+        <location filename="form.cpp" line="286"/>
         <source>Local error</source>
         <translation>Локальная погрешность</translation>
     </message>
     <message>
-        <location filename="form.cpp" line="198"/>
-        <location filename="form.cpp" line="281"/>
-        <location filename="form.cpp" line="364"/>
-        <location filename="form.cpp" line="447"/>
+        <location filename="form.cpp" line="319"/>
         <source>Global error</source>
         <translation>Глобальная погрешность</translation>
     </message>
     <message>
-        <location filename="form.cpp" line="476"/>
+        <location filename="form.cpp" line="276"/>
         <source>Euler</source>
         <translation>Метод Эйлера</translation>
     </message>
     <message>
-        <location filename="form.cpp" line="477"/>
+        <location filename="form.cpp" line="277"/>
         <source>Leap frog</source>
         <translation>Метод с перешагиванием</translation>
     </message>
     <message>
-        <location filename="form.cpp" line="478"/>
+        <location filename="form.cpp" line="278"/>
         <source>Two-step</source>
         <translation>Явный двухшаговый метод</translation>
     </message>
     <message>
-        <location filename="form.cpp" line="479"/>
+        <location filename="form.cpp" line="279"/>
         <source>Runge-Kutta</source>
         <translation>Метод Рунге-Кутты</translation>
     </message>
