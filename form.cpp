@@ -226,9 +226,6 @@ Form::Form(QWidget *parent)
     connect(tabWidgetMethods, SIGNAL(currentChanged(int)), this, SLOT(updateSolution()));
 
     initiateState();
-
-    qDebug() << labelNT_1->alignment() << labelNT_2->alignment() << spinBoxNT->alignment();
-    qDebug() << labelDT_1->alignment() << labelDT_2->alignment() << labelDT->alignment();
 }
 
 Form::~Form()
