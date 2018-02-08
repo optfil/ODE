@@ -7,6 +7,55 @@
 Form::Form(QWidget *parent)
     : QWidget(parent), param(nullptr), t_cur_(0.0)
 {
+    seriesEulerIdeal = new QLineSeries();
+    seriesEulerIdeal->setColor(Qt::blue);
+    seriesEulerIdeal->setPen(QPen(seriesEulerIdeal->pen().brush(), 3));
+    seriesLeapfrogIdeal = new QLineSeries();
+    seriesLeapfrogIdeal->setColor(Qt::blue);
+    seriesLeapfrogIdeal->setPen(QPen(seriesLeapfrogIdeal->pen().brush(), 3));
+    seriesTwostepIdeal = new QLineSeries();
+    seriesTwostepIdeal->setColor(Qt::blue);
+    seriesTwostepIdeal->setPen(QPen(seriesTwostepIdeal->pen().brush(), 3));
+    seriesRungekuttaIdeal = new QLineSeries();
+    seriesRungekuttaIdeal->setColor(Qt::blue);
+    seriesRungekuttaIdeal->setPen(QPen(seriesRungekuttaIdeal->pen().brush(), 3));
+    seriesEulerSolution = new QLineSeries();
+    seriesEulerSolution->setColor(Qt::red);
+    seriesEulerSolution->setPen(QPen(seriesEulerSolution->pen().brush(), 3));
+    seriesLeapfrogSolution = new QLineSeries();
+    seriesLeapfrogSolution->setColor(Qt::red);
+    seriesLeapfrogSolution->setPen(QPen(seriesLeapfrogSolution->pen().brush(), 3));
+    seriesTwostepSolution = new QLineSeries();
+    seriesTwostepSolution->setColor(Qt::red);
+    seriesTwostepSolution->setPen(QPen(seriesTwostepSolution->pen().brush(), 3));
+    seriesRungekuttaSolution = new QLineSeries();
+    seriesRungekuttaSolution->setColor(Qt::red);
+    seriesRungekuttaSolution->setPen(QPen(seriesRungekuttaSolution->pen().brush(), 3));
+    seriesEulerLocal = new QLineSeries();
+    seriesEulerLocal->setColor(Qt::red);
+    seriesEulerLocal->setPen(QPen(seriesEulerLocal->pen().brush(), 3));
+    seriesLeapfrogLocal= new QLineSeries();
+    seriesLeapfrogLocal->setColor(Qt::red);
+    seriesLeapfrogLocal->setPen(QPen(seriesLeapfrogLocal->pen().brush(), 3));
+    seriesTwostepLocal = new QLineSeries();
+    seriesTwostepLocal->setColor(Qt::red);
+    seriesTwostepLocal->setPen(QPen(seriesTwostepLocal->pen().brush(), 3));
+    seriesRungekuttaLocal = new QLineSeries();
+    seriesRungekuttaLocal->setColor(Qt::red);
+    seriesRungekuttaLocal->setPen(QPen(seriesRungekuttaLocal->pen().brush(), 3));
+    seriesEulerGlobal = new QLineSeries();
+    seriesEulerGlobal->setColor(Qt::red);
+    seriesEulerGlobal->setPen(QPen(seriesEulerGlobal->pen().brush(), 3));
+    seriesLeapfrogGlobal= new QLineSeries();
+    seriesLeapfrogGlobal->setColor(Qt::red);
+    seriesLeapfrogGlobal->setPen(QPen(seriesLeapfrogGlobal->pen().brush(), 3));
+    seriesTwostepGlobal = new QLineSeries();
+    seriesTwostepGlobal->setColor(Qt::red);
+    seriesTwostepGlobal->setPen(QPen(seriesTwostepGlobal->pen().brush(), 3));
+    seriesRungekuttaGlobal = new QLineSeries();
+    seriesRungekuttaGlobal->setColor(Qt::red);
+    seriesRungekuttaGlobal->setPen(QPen(seriesRungekuttaGlobal->pen().brush(), 3));
+
     labelEquation = new QLabel(tr("Equation type"));
     comboBoxEquation = new QComboBox();
     comboBoxEquation->addItem(tr("y' = -y"), QVariant(Decay));
