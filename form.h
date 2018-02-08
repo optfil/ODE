@@ -52,6 +52,10 @@ private:
     QChartView *leapfrogSolution, *leapfrogLocal, *leapfrogGlobal;
     QChartView *twostepSolution, *twostepLocal, *twostepGlobal;
     QChartView *rungekuttaSolution, *rungekuttaLocal, *rungekuttaGlobal;
+    QLineSeries *seriesEulerIdeal, *seriesLeapfrogIdeal, *seriesTwostepIdeal, *seriesRungekuttaIdeal;
+    QLineSeries *seriesEulerSolution, *seriesLeapfrogSolution, *seriesTwostepSolution, *seriesRungekuttaSolution;
+    QLineSeries *seriesEulerLocal, *seriesLeapfrogLocal, *seriesTwostepLocal, *seriesRungekuttaLocal;
+    QLineSeries *seriesEulerGlobal, *seriesLeapfrogGlobal, *seriesTwostepGlobal, *seriesRungekuttaGlobal;
 
     Parameters *param;
     double t_cur_;
