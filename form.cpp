@@ -20,6 +20,20 @@ static double direct(double t, Form::EquationType type)
     return 0.0;
 }
 
+static std::complex<double> func(std::complex<double> y, double /* t */, Form::EquationType type)
+{
+    switch (type)
+    {
+    case Form::Decay:
+        return -y;
+    case Form::Grow:
+        return y;
+    case Form::Oscillate:
+        return std::complex<double>(0.0, 1.0) * y;
+    }
+    return 0.0;
+}
+
 static void setGrid(QValueAxis* ax)
 {
     ax->setGridLineVisible(true);
@@ -30,7 +44,7 @@ static void setGrid(QValueAxis* ax)
 }
 
 Form::Form(QWidget *parent)
-    : QWidget(parent), param(nullptr), t_cur_(0.0)
+    : QWidget(parent), param(nullptr), t_cur_(0.0), euler_y_(1.0, 0.0)
 {
     timer = new QTimer();
     timer->setInterval(30);
@@ -486,7 +500,7 @@ Form::Form(QWidget *parent)
 
     setLayout(layoutMain);
 
-    connect(comboBoxEquation, SIGNAL(currentIndexChanged(int)), this, SLOT(initiateState()));
+    connect(comboBoxEquation, SIGNAL(currentIndexChanged(int)), this, SLOT(updateGUI()));
     connect(sliderSizeT, SIGNAL(valueChanged(int)), this, SLOT(update_sizet(int)));
     connect(sliderNT, SIGNAL(valueChanged(int)), this, SLOT(update_nt(int)));
     connect(spinBoxSizeT, SIGNAL(valueChanged(int)), this, SLOT(update_sizet(int)));
@@ -494,7 +508,7 @@ Form::Form(QWidget *parent)
     connect(pushButtonSolve, SIGNAL(clicked(bool)), this, SLOT(Solve()));
     connect(timer, SIGNAL(timeout()), this, SLOT(Tick()));
 
-    initiateState();
+    updateGUI();
 }
 
 Form::~Form()
@@ -513,7 +527,7 @@ void Form::update_sizet(int n)
     spinBoxSizeT->blockSignals(false);
     sliderSizeT->blockSignals(false);
 
-    initiateState();
+    updateGUI();
 }
 
 void Form::update_nt(int n)
@@ -527,7 +541,7 @@ void Form::update_nt(int n)
     spinBoxNT->blockSignals(false);
     sliderNT->blockSignals(false);
 
-    initiateState();
+    updateGUI();
 }
 
 void Form::updateLabels()
@@ -535,19 +549,18 @@ void Form::updateLabels()
     labelDT->setText(QString::number(param->get_tstep(), 'f', 3));
 }
 
-void Form::initiateState()
+void Form::updateGUI()
 {
     delete param;
     param = new Parameters(spinBoxSizeT->value(), spinBoxNT->value());
 
-    method_ = static_cast<MethodType>(tabWidgetMethods->currentIndex());
-    EquationType type = comboBoxEquation->currentData().value<EquationType>();
+    eq_type_ = comboBoxEquation->currentData().value<EquationType>();
 
     QList<QPointF> ideal;
     for (int n = 0; n <= kIdealPoints; ++n)
     {
         double t = param->get_tmax() / kIdealPoints * n;
-        ideal << QPointF(t / param->get_tmax(), direct(t, type));
+        ideal << QPointF(t / param->get_tmax(), direct(t, eq_type_));
     }
 
     seriesEulerIdeal->clear();
@@ -575,7 +588,7 @@ void Form::initiateState()
     seriesRungekuttaGlobal->clear();
 
     double yaxis_max = 0.0, yaxis_min = 0.0;
-    switch (type)
+    switch (eq_type_)
     {
     case Decay:
         yaxis_max = 1.5;
@@ -598,6 +611,12 @@ void Form::initiateState()
     updateLabels();
 }
 
+void Form::initiateState()
+{
+    t_cur_ = 0.0;
+    euler_y_ = std::complex<double>(1.0, 0.0);
+}
+
 void Form::Solve()
 {
     pushButtonSolve->setEnabled(false);
@@ -608,9 +627,14 @@ void Form::Solve()
     sliderSizeT->setEnabled(false);
     sliderNT->setEnabled(false);
 
+    updateGUI();
     initiateState();
 
-    t_cur_ = 0.0;
+    seriesEulerSolution->append(QPointF(t_cur_, std::real(euler_y_)));
+    seriesLeapfrogSolution->append(QPointF(t_cur_, std::real(euler_y_)));
+    seriesTwostepSolution->append(QPointF(t_cur_, std::real(euler_y_)));
+    seriesRungekuttaSolution->append(QPointF(t_cur_, std::real(euler_y_)));
+
     timer->start();
 }
 
@@ -618,7 +642,12 @@ void Form::Tick()
 {
     if (t_cur_ < param->get_tmax() + 1e-3*param->get_tstep())
     {
-        t_cur_ += param->get_tstep();
+        double new_t = t_cur_ + param->get_tstep();
+        euler_y_ += func(euler_y_, t_cur_, eq_type_) * param->get_tstep();
+
+        seriesEulerSolution->append(new_t / param->get_tmax(), std::real(euler_y_));
+
+        t_cur_ = new_t;
     }
     else
     {

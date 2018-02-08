@@ -1,6 +1,8 @@
 #ifndef FORM_H
 #define FORM_H
 
+#include <complex>
+
 #include <QWidget>
 #include <QComboBox>
 #include <QLabel>
@@ -40,6 +42,7 @@ private slots:
     void update_nt(int n);
     void update_sizet(int n);
     void updateLabels();
+    void updateGUI();
     void initiateState();
     void Solve();
     void Tick();
@@ -64,9 +67,10 @@ private:
 
     QTimer *timer;
 
+    EquationType eq_type_;
     Parameters *param;
     double t_cur_;
-    MethodType method_;
+    std::complex<double> euler_y_;
 };
 
 #endif // FORM_H
