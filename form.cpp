@@ -640,6 +640,11 @@ void Form::Solve()
     seriesTwostepSolution->append(t_cur_ / param->get_tmax(), std::real(twostep_y_));
     seriesRungekuttaSolution->append(t_cur_ / param->get_tmax(), std::real(rungekutta_y_));
 
+    seriesEulerLocal->append(t_cur_, 0.0);
+    seriesLeapfrogLocal->append(t_cur_, 0.0);
+    seriesTwostepLocal->append(t_cur_, 0.0);
+    seriesRungekuttaLocal->append(t_cur_, 0.0);
+
     timer->start();
 }
 
@@ -668,6 +673,11 @@ void Form::Tick()
         seriesLeapfrogSolution->append(t_cur_ / param->get_tmax(), std::real(leapfrog_y_));
         seriesTwostepSolution->append(t_cur_ / param->get_tmax(), std::real(twostep_y_));
         seriesRungekuttaSolution->append(t_cur_ / param->get_tmax(), std::real(rungekutta_y_));
+
+        seriesEulerLocal->append(t_cur_ / param->get_tmax(), std::abs(euler_y_ - direct(t_cur_, eq_type_)));
+        seriesLeapfrogLocal->append(t_cur_ / param->get_tmax(), std::abs(leapfrog_y_ - direct(t_cur_, eq_type_)));
+        seriesTwostepLocal->append(t_cur_ / param->get_tmax(), std::abs(twostep_y_ - direct(t_cur_, eq_type_)));
+        seriesRungekuttaLocal->append(t_cur_ / param->get_tmax(), std::abs(rungekutta_y_ - direct(t_cur_, eq_type_)));
     }
     else
     {
