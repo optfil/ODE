@@ -8,7 +8,7 @@
 #include <QSpinBox>
 #include <QTabWidget>
 
-#include "Parameters.h"
+#include "parameters.h"
 
 
 constexpr int kTMin = 1;
