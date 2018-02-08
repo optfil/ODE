@@ -44,7 +44,8 @@ static void setGrid(QValueAxis* ax)
 }
 
 Form::Form(QWidget *parent)
-    : QWidget(parent), param(nullptr), t_cur_(0.0), euler_y_(1.0, 0.0), twostep_y_(1.0, 0.0)
+    : QWidget(parent), param(nullptr),
+      t_cur_(0.0), euler_y_(1.0, 0.0), leapfrog_y_(1.0, 0.0), leapfrog_new_y_(1.0, 0.0), twostep_y_(1.0, 0.0), rungekutta_y_(1.0, 0.0)
 {
     timer = new QTimer();
     timer->setInterval(30);
@@ -595,12 +596,12 @@ void Form::updateGUI()
         yaxis_min = -0.5;
         break;
     case Grow:
-        yaxis_max = std::min(std::exp(param->get_tmax()), 15.0);
+        yaxis_max = std::min(std::exp(param->get_tmax()), 50.0);
         yaxis_min = 0.0;
         break;
     case Oscillate:
-        yaxis_max = 1.5;
-        yaxis_min = -1.5;
+        yaxis_max = 2.0;
+        yaxis_min = -2.0;
         break;
     }
     eulerSolution->chart()->axisY()->setRange(yaxis_min, yaxis_max);
@@ -615,7 +616,11 @@ void Form::initiateState()
 {
     t_cur_ = 0.0;
     euler_y_ = std::complex<double>(1.0, 0.0);
+    leapfrog_y_ = leapfrog_new_y_ = std::complex<double>(1.0, 0.0);
+    for (int n = 0; n < 10; ++n)
+        leapfrog_new_y_ += 0.1*param->get_tstep() * func(leapfrog_new_y_, t_cur_ + n * 0.1*param->get_tstep(), eq_type_);
     twostep_y_ = std::complex<double>(1.0, 0.0);
+    rungekutta_y_ = std::complex<double>(1.0, 0.0);
 }
 
 void Form::Solve()
@@ -630,10 +635,10 @@ void Form::Solve()
     updateGUI();
     initiateState();
 
-    seriesEulerSolution->append(QPointF(t_cur_, std::real(euler_y_)));
-    seriesLeapfrogSolution->append(QPointF(t_cur_, std::real(euler_y_)));
-    seriesTwostepSolution->append(QPointF(t_cur_, std::real(euler_y_)));
-    seriesRungekuttaSolution->append(QPointF(t_cur_, std::real(euler_y_)));
+    seriesEulerSolution->append(t_cur_ / param->get_tmax(), std::real(euler_y_));
+    seriesLeapfrogSolution->append(t_cur_ / param->get_tmax(), std::real(leapfrog_y_));
+    seriesTwostepSolution->append(t_cur_ / param->get_tmax(), std::real(twostep_y_));
+    seriesRungekuttaSolution->append(t_cur_ / param->get_tmax(), std::real(rungekutta_y_));
 
     timer->start();
 }
@@ -642,16 +647,27 @@ void Form::Tick()
 {
     if (t_cur_ < param->get_tmax() + 1e-3*param->get_tstep())
     {
-        double new_t = t_cur_ + param->get_tstep();
         euler_y_ += func(euler_y_, t_cur_, eq_type_) * param->get_tstep();
 
-        std::complex<double> twostep_tmp_ = twostep_y_ + 0.5 * param->get_tstep() * func(twostep_y_, t_cur_, eq_type_);
-        twostep_y_ += param->get_tstep() * func(twostep_tmp_, t_cur_ + 0.5*param->get_tstep(), eq_type_);
+        std::complex<double> leapfrog_tmp = leapfrog_new_y_;
+        leapfrog_new_y_ = leapfrog_y_ + 2.0*param->get_tstep() * func(leapfrog_new_y_, t_cur_, eq_type_);
+        leapfrog_y_ = leapfrog_tmp;
 
-        seriesEulerSolution->append(new_t / param->get_tmax(), std::real(euler_y_));
-        seriesTwostepSolution->append(new_t / param->get_tmax(), std::real(twostep_y_));
+        std::complex<double> twostep_tmp = twostep_y_ + 0.5 * param->get_tstep() * func(twostep_y_, t_cur_, eq_type_);
+        twostep_y_ += param->get_tstep() * func(twostep_tmp, t_cur_ + 0.5*param->get_tstep(), eq_type_);
 
-        t_cur_ = new_t;
+        std::complex<double> rk1 = func(rungekutta_y_, t_cur_, eq_type_) * param->get_tstep();
+        std::complex<double> rk2 = func(rungekutta_y_ + 0.5*rk1, t_cur_ + 0.5*param->get_tstep(), eq_type_) * param->get_tstep();
+        std::complex<double> rk3 = func(rungekutta_y_ + 0.5*rk2, t_cur_ + 0.5*param->get_tstep(), eq_type_) * param->get_tstep();
+        std::complex<double> rk4 = func(rungekutta_y_ + rk3, t_cur_ + param->get_tstep(), eq_type_) * param->get_tstep();
+        rungekutta_y_ += 1.0/6.0 * (rk1 + 2.0*rk2 + 2.0*rk3 + rk4);
+
+        t_cur_ += param->get_tstep();
+
+        seriesEulerSolution->append(t_cur_ / param->get_tmax(), std::real(euler_y_));
+        seriesLeapfrogSolution->append(t_cur_ / param->get_tmax(), std::real(leapfrog_y_));
+        seriesTwostepSolution->append(t_cur_ / param->get_tmax(), std::real(twostep_y_));
+        seriesRungekuttaSolution->append(t_cur_ / param->get_tmax(), std::real(rungekutta_y_));
     }
     else
     {
