@@ -283,7 +283,7 @@ Form::Form(QWidget *parent)
 
     tabWidgetMethods = new QTabWidget();
     tabWidgetMethods->addTab(eulerWidget, tr("Euler"));
-    tabWidgetMethods->addTab(leapfrogWidget, tr("Leap frog"));
+    tabWidgetMethods->addTab(leapfrogWidget, tr("Leapfrog"));
     tabWidgetMethods->addTab(twostepWidget, tr("Two-step"));
     tabWidgetMethods->addTab(rungekuttaWidget, tr("Runge-Kutta"));
     tabWidgetMethods->tabBar()->setTabTextColor(0, blendColors(Qt::red, Qt::black));
