@@ -4,6 +4,15 @@
 
 #include <QDebug>
 
+static void setGrid(QValueAxis* ax)
+{
+    ax->setGridLineVisible(true);
+    QPen pen = ax->gridLinePen();
+    pen.setWidth(2);
+    pen.setColor(Qt::gray);
+    ax->setGridLinePen(pen);
+}
+
 Form::Form(QWidget *parent)
     : QWidget(parent), param(nullptr), t_cur_(0.0)
 {
@@ -102,7 +111,24 @@ Form::Form(QWidget *parent)
     eulerSolutionChart->addSeries(seriesEulerSolution);
     eulerSolutionChart->setTitle(tr("Solution"));
     eulerSolutionChart->legend()->hide();
-    // add axis, grid
+
+    QValueAxis *axisXEulerSolution = new QValueAxis;
+    axisXEulerSolution->setLineVisible(false);
+    setGrid(axisXEulerSolution);
+    axisXEulerSolution->setLabelsVisible(false);
+    axisXEulerSolution->setRange(0.0, kTMin);
+    eulerSolutionChart->addAxis(axisXEulerSolution, Qt::AlignBottom);
+    seriesEulerIdeal->attachAxis(axisXEulerSolution);
+    seriesEulerSolution->attachAxis(axisXEulerSolution);
+    QValueAxis *axisYEulerSolution = new QValueAxis;
+    axisYEulerSolution->setLineVisible(false);
+    setGrid(axisYEulerSolution);
+    axisYEulerSolution->setLabelsVisible(false);
+    axisYEulerSolution->setRange(0.0, 1.003);
+    eulerSolutionChart->addAxis(axisYEulerSolution, Qt::AlignLeft);
+    seriesEulerIdeal->attachAxis(axisYEulerSolution);
+    seriesEulerSolution->attachAxis(axisYEulerSolution);
+
     eulerSolution = new QChartView();
     eulerSolution->setRenderHint(QPainter::Antialiasing);
     eulerSolution->setChart(eulerSolutionChart);
@@ -111,7 +137,22 @@ Form::Form(QWidget *parent)
     eulerLocalChart->addSeries(seriesEulerLocal);
     eulerLocalChart->setTitle(tr("Local error"));
     eulerLocalChart->legend()->hide();
-    // add axis, grid
+
+    QValueAxis *axisXEulerLocal= new QValueAxis;
+    axisXEulerLocal->setLineVisible(false);
+    setGrid(axisXEulerLocal);
+    axisXEulerLocal->setLabelsVisible(false);
+    axisXEulerLocal->setRange(0.0, kTMin);
+    eulerLocalChart->addAxis(axisXEulerLocal, Qt::AlignBottom);
+    seriesEulerLocal->attachAxis(axisXEulerLocal);
+    QValueAxis *axisYEulerLocal = new QValueAxis;
+    axisYEulerLocal->setLineVisible(false);
+    setGrid(axisYEulerLocal);
+    axisYEulerLocal->setLabelsVisible(false);
+    axisYEulerLocal->setRange(0.0, 1.003);
+    eulerLocalChart->addAxis(axisYEulerLocal, Qt::AlignLeft);
+    seriesEulerLocal->attachAxis(axisYEulerLocal);
+
     eulerLocal = new QChartView();
     eulerLocal->setRenderHint(QPainter::Antialiasing);
     eulerLocal->setChart(eulerLocalChart);
@@ -120,7 +161,22 @@ Form::Form(QWidget *parent)
     eulerGlobalChart->addSeries(seriesEulerGlobal);
     eulerGlobalChart->setTitle(tr("Global error"));
     eulerGlobalChart->legend()->hide();
-    // add axis, grid
+
+    QValueAxis *axisXEulerGlobal= new QValueAxis;
+    axisXEulerGlobal->setLineVisible(false);
+    setGrid(axisXEulerGlobal);
+    axisXEulerGlobal->setLabelsVisible(false);
+    axisXEulerGlobal->setRange(0.0, kTMin);
+    eulerGlobalChart->addAxis(axisXEulerGlobal, Qt::AlignBottom);
+    seriesEulerGlobal->attachAxis(axisXEulerGlobal);
+    QValueAxis *axisYEulerGlobal = new QValueAxis;
+    axisYEulerGlobal->setLineVisible(false);
+    setGrid(axisYEulerGlobal);
+    axisYEulerGlobal->setLabelsVisible(false);
+    axisYEulerGlobal->setRange(0.0, 1.003);
+    eulerGlobalChart->addAxis(axisYEulerGlobal, Qt::AlignLeft);
+    seriesEulerGlobal->attachAxis(axisYEulerGlobal);
+
     eulerGlobal = new QChartView();
     eulerGlobal->setRenderHint(QPainter::Antialiasing);
     eulerGlobal->setChart(eulerGlobalChart);
