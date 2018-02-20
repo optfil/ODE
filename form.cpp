@@ -356,7 +356,7 @@ Form::Form(QWidget *parent)
     QLogValueAxis *axisYGlobal = new QLogValueAxis;
     axisYGlobal->setLineVisible(false);
     setGrid(axisYGlobal);
-    axisYGlobal->setRange(1e-7, 1e-0);
+    axisYGlobal->setRange(1e-15, 1e-0);
     axisYGlobal->setLabelFormat("%.0e");
     globalErrorChart->addAxis(axisYGlobal, Qt::AlignLeft);
     seriesEulerGlobal->attachAxis(axisYGlobal);
@@ -576,14 +576,18 @@ void Form::Tick()
         leapfrog_new_y_ = leapfrog_y_ + 2.0*param->get_tstep() * func(leapfrog_new_y_, t_cur_, eq_type_);
         leapfrog_y_ = leapfrog_tmp;
 
+        twostepGlobalNumenator += 0.5 * std::pow(std::real(twostep_y_) - direct(t_cur_, eq_type_), 2);
         std::complex<double> twostep_tmp = twostep_y_ + 0.5 * param->get_tstep() * func(twostep_y_, t_cur_, eq_type_);
         twostep_y_ += param->get_tstep() * func(twostep_tmp, t_cur_ + 0.5*param->get_tstep(), eq_type_);
+        twostepGlobalNumenator += 0.5 * std::pow(std::real(twostep_y_) - direct(t_cur_+param->get_tstep(), eq_type_), 2);
 
+        rungekuttaGlobalNumenator += 0.5 * std::pow(std::real(rungekutta_y_) - direct(t_cur_, eq_type_), 2);
         std::complex<double> rk1 = func(rungekutta_y_, t_cur_, eq_type_) * param->get_tstep();
         std::complex<double> rk2 = func(rungekutta_y_ + 0.5*rk1, t_cur_ + 0.5*param->get_tstep(), eq_type_) * param->get_tstep();
         std::complex<double> rk3 = func(rungekutta_y_ + 0.5*rk2, t_cur_ + 0.5*param->get_tstep(), eq_type_) * param->get_tstep();
         std::complex<double> rk4 = func(rungekutta_y_ + rk3, t_cur_ + param->get_tstep(), eq_type_) * param->get_tstep();
         rungekutta_y_ += 1.0/6.0 * (rk1 + 2.0*rk2 + 2.0*rk3 + rk4);
+        rungekuttaGlobalNumenator += 0.5 * std::pow(std::real(rungekutta_y_) - direct(t_cur_+param->get_tstep(), eq_type_), 2);
 
         t_cur_ += param->get_tstep();
 
@@ -598,6 +602,9 @@ void Form::Tick()
         seriesRungekuttaLocal->append(t_cur_ / param->get_tmax(), std::abs(std::real(rungekutta_y_) - direct(t_cur_, eq_type_)));
 
         seriesEulerGlobal->append(t_cur_ / param->get_tmax(), eulerGlobalNumenator / commonGlobalDenominator);
+        //seriesLeapfrogGlobal->append(t_cur_ / param->get_tmax(), leapfrogGlobalNumenator / commonGlobalDenominator);
+        seriesTwostepGlobal->append(t_cur_ / param->get_tmax(), twostepGlobalNumenator / commonGlobalDenominator);
+        seriesRungekuttaGlobal->append(t_cur_ / param->get_tmax(), rungekuttaGlobalNumenator / commonGlobalDenominator);
     }
     else
     {
