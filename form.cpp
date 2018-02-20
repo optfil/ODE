@@ -414,6 +414,8 @@ Form::Form(QWidget *parent)
 
     updateGUI();
     selectMethod(tabWidgetMethods->currentIndex());
+
+    this->setMinimumHeight(800);
 }
 
 Form::~Form()
