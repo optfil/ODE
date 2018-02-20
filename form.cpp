@@ -357,7 +357,8 @@ Form::Form(QWidget *parent)
     axisYGlobal->setLineVisible(false);
     setGrid(axisYGlobal);
     axisYGlobal->setRange(1e-15, 1e-0);
-    axisYGlobal->setLabelFormat("%.0e");
+    //axisYGlobal->setLabelFormat("%.0e");
+    axisYGlobal->setLabelsVisible(false);
     globalErrorChart->addAxis(axisYGlobal, Qt::AlignLeft);
     seriesEulerGlobal->attachAxis(axisYGlobal);
     seriesLeapfrogGlobal->attachAxis(axisYGlobal);
@@ -572,9 +573,11 @@ void Form::Tick()
         euler_y_ += func(euler_y_, t_cur_, eq_type_) * param->get_tstep();
         eulerGlobalNumenator += 0.5 * std::pow(std::real(euler_y_) - direct(t_cur_+param->get_tstep(), eq_type_), 2);
 
+        leapfrogGlobalNumenator += 0.5 * std::pow(std::real(leapfrog_y_) - direct(t_cur_, eq_type_), 2);
         std::complex<double> leapfrog_tmp = leapfrog_new_y_;
         leapfrog_new_y_ = leapfrog_y_ + 2.0*param->get_tstep() * func(leapfrog_new_y_, t_cur_, eq_type_);
         leapfrog_y_ = leapfrog_tmp;
+        leapfrogGlobalNumenator += 0.5 * std::pow(std::real(leapfrog_y_) - direct(t_cur_+param->get_tstep(), eq_type_), 2);
 
         twostepGlobalNumenator += 0.5 * std::pow(std::real(twostep_y_) - direct(t_cur_, eq_type_), 2);
         std::complex<double> twostep_tmp = twostep_y_ + 0.5 * param->get_tstep() * func(twostep_y_, t_cur_, eq_type_);
@@ -602,7 +605,7 @@ void Form::Tick()
         seriesRungekuttaLocal->append(t_cur_ / param->get_tmax(), std::abs(std::real(rungekutta_y_) - direct(t_cur_, eq_type_)));
 
         seriesEulerGlobal->append(t_cur_ / param->get_tmax(), eulerGlobalNumenator / commonGlobalDenominator);
-        //seriesLeapfrogGlobal->append(t_cur_ / param->get_tmax(), leapfrogGlobalNumenator / commonGlobalDenominator);
+        seriesLeapfrogGlobal->append(t_cur_ / param->get_tmax(), leapfrogGlobalNumenator / commonGlobalDenominator);
         seriesTwostepGlobal->append(t_cur_ / param->get_tmax(), twostepGlobalNumenator / commonGlobalDenominator);
         seriesRungekuttaGlobal->append(t_cur_ / param->get_tmax(), rungekuttaGlobalNumenator / commonGlobalDenominator);
     }
