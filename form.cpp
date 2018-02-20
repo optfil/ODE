@@ -377,13 +377,18 @@ Form::Form(QWidget *parent)
     layoutParam->addWidget(pushButtonSolve, 4, 1, 1, 2, Qt::AlignTop);
     layoutParam->setRowStretch(4, 1);
 
+    QVBoxLayout *layoutLeft = new QVBoxLayout();
+    layoutLeft->addLayout(layoutParam);
+    layoutLeft->addWidget(checkBoxShowErrors, 0, Qt::AlignRight);
+    layoutLeft->addStretch();
+
     QVBoxLayout *layoutCharts = new QVBoxLayout();
     layoutCharts->addWidget(tabWidgetMethods);
     layoutCharts->addWidget(localError);
     layoutCharts->addWidget(globalError);
 
     QHBoxLayout *layoutMain = new QHBoxLayout();
-    layoutMain->addLayout(layoutParam);
+    layoutMain->addLayout(layoutLeft);
     layoutMain->addLayout(layoutCharts);
 
     setLayout(layoutMain);
