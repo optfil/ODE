@@ -149,6 +149,9 @@ Form::Form(QWidget *parent)
 
     pushButtonSolve = new QPushButton(tr("Start"));
 
+    checkBoxShowErrors = new QCheckBox(tr("Show errors"));
+
+
     QWidget *eulerWidget = new QWidget();
 
     QChart *eulerSolutionChart = new QChart();

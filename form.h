@@ -3,7 +3,7 @@
 
 #include <complex>
 
-#include <QWidget>
+#include <QCheckBox>
 #include <QComboBox>
 #include <QLabel>
 #include <QPushButton>
@@ -11,6 +11,7 @@
 #include <QSpinBox>
 #include <QTabWidget>
 #include <QTimer>
+#include <QWidget>
 
 #include <QtCharts/QtCharts>
 QT_CHARTS_USE_NAMESPACE
@@ -56,6 +57,7 @@ private:
     QSlider *sliderSizeT, *sliderNT;
     QLabel *labelDT_1, *labelDT_2, *labelDT;
     QPushButton *pushButtonSolve;
+    QCheckBox *checkBoxShowErrors;
     QTabWidget *tabWidgetMethods;
     QChartView *eulerSolution, *leapfrogSolution, *twostepSolution, *rungekuttaSolution;
     QChartView *localError, *globalError;
