@@ -537,6 +537,9 @@ void Form::initiateState()
         leapfrog_new_y_ += 0.1*param->get_tstep() * func(leapfrog_new_y_, t_cur_ + n * 0.1*param->get_tstep(), eq_type_);
     twostep_y_ = std::complex<double>(1.0, 0.0);
     rungekutta_y_ = std::complex<double>(1.0, 0.0);
+
+    eulerGlobalNumenator = leapfrogGlobalNumenator = twostepGlobalNumenator = rungekuttaGlobalNumenator = 0.0;
+    commonGlobalDenominator = 0.5 * direct(0.0, eq_type_);
 }
 
 void Form::Solve()
@@ -563,7 +566,11 @@ void Form::Tick()
 {
     if (t_cur_ < param->get_tmax() + 1e-3*param->get_tstep())
     {
+        commonGlobalDenominator += 0.5 * (std::pow(direct(t_cur_, eq_type_), 2) + std::pow(direct(t_cur_+param->get_tstep(), eq_type_), 2));
+
+        eulerGlobalNumenator += 0.5 * std::pow(std::real(euler_y_) - direct(t_cur_, eq_type_), 2);
         euler_y_ += func(euler_y_, t_cur_, eq_type_) * param->get_tstep();
+        eulerGlobalNumenator += 0.5 * std::pow(std::real(euler_y_) - direct(t_cur_+param->get_tstep(), eq_type_), 2);
 
         std::complex<double> leapfrog_tmp = leapfrog_new_y_;
         leapfrog_new_y_ = leapfrog_y_ + 2.0*param->get_tstep() * func(leapfrog_new_y_, t_cur_, eq_type_);
@@ -589,6 +596,8 @@ void Form::Tick()
         seriesLeapfrogLocal->append(t_cur_ / param->get_tmax(), std::abs(std::real(leapfrog_y_) - direct(t_cur_, eq_type_)));
         seriesTwostepLocal->append(t_cur_ / param->get_tmax(), std::abs(std::real(twostep_y_) - direct(t_cur_, eq_type_)));
         seriesRungekuttaLocal->append(t_cur_ / param->get_tmax(), std::abs(std::real(rungekutta_y_) - direct(t_cur_, eq_type_)));
+
+        seriesEulerGlobal->append(t_cur_ / param->get_tmax(), eulerGlobalNumenator / commonGlobalDenominator);
     }
     else
     {
