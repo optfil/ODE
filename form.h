@@ -48,6 +48,7 @@ private slots:
     void selectMethod(int n);
     void Solve();
     void Tick();
+    void showErrors(bool show);
 
 private:
     QLabel *labelEquation;

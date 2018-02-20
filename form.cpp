@@ -108,6 +108,11 @@ Form::Form(QWidget *parent)
     seriesRungekuttaGlobal->setColor(Qt::magenta);
     seriesRungekuttaGlobal->setPen(QPen(seriesRungekuttaGlobal->pen().brush(), 3));
 
+    seriesEulerLocal->setVisible(false);
+    seriesLeapfrogLocal->setVisible(false);
+    seriesTwostepLocal->setVisible(false);
+    seriesRungekuttaLocal->setVisible(false);
+
     labelEquation = new QLabel(tr("Equation type"));
     comboBoxEquation = new QComboBox();
     comboBoxEquation->addItem(tr("y' = -y"), QVariant(Decay));
@@ -401,6 +406,7 @@ Form::Form(QWidget *parent)
     connect(tabWidgetMethods, SIGNAL(currentChanged(int)), this, SLOT(selectMethod(int)));
     connect(pushButtonSolve, SIGNAL(clicked(bool)), this, SLOT(Solve()));
     connect(timer, SIGNAL(timeout()), this, SLOT(Tick()));
+    connect(checkBoxShowErrors, SIGNAL(clicked(bool)), this, SLOT(showErrors(bool)));
 
     updateGUI();
     selectMethod(tabWidgetMethods->currentIndex());
@@ -591,4 +597,12 @@ void Form::Tick()
         sliderSizeT->setEnabled(true);
         sliderNT->setEnabled(true);
     }
+}
+
+void Form::showErrors(bool show)
+{
+    seriesEulerLocal->setVisible(show);
+    seriesLeapfrogLocal->setVisible(show);
+    seriesTwostepLocal->setVisible(show);
+    seriesRungekuttaLocal->setVisible(show);
 }
