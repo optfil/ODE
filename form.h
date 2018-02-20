@@ -73,6 +73,7 @@ private:
     Parameters *param;
     double t_cur_;
     std::complex<double> euler_y_, leapfrog_y_, leapfrog_new_y_, twostep_y_, rungekutta_y_;
+    double eulerGlobalNumenator = 0.0, eulerGlobalDenominator = 0.0, leapfrogGlobalNumenator = 0.0, leapfrogGlobalDenominator = 0.0, twostepGlobalNumenator = 0.0, twostepGlobalDenominator = 0.0, rungekuttaGlobalNumenator = 0.0, rungekuttaGlobalDenominator = 0.0;
 };
 
 #endif // FORM_H

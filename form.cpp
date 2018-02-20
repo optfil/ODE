@@ -160,7 +160,6 @@ Form::Form(QWidget *parent)
 
     checkBoxShowErrors = new QCheckBox(tr("Show errors"));
 
-
     QWidget *eulerWidget = new QWidget();
 
     QChart *eulerSolutionChart = new QChart();
