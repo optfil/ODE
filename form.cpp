@@ -112,6 +112,10 @@ Form::Form(QWidget *parent)
     seriesLeapfrogLocal->setVisible(false);
     seriesTwostepLocal->setVisible(false);
     seriesRungekuttaLocal->setVisible(false);
+    seriesEulerGlobal->setVisible(false);
+    seriesLeapfrogGlobal->setVisible(false);
+    seriesTwostepGlobal->setVisible(false);
+    seriesRungekuttaGlobal->setVisible(false);
 
     labelEquation = new QLabel(tr("Equation type"));
     comboBoxEquation = new QComboBox();
@@ -605,4 +609,8 @@ void Form::showErrors(bool show)
     seriesLeapfrogLocal->setVisible(show);
     seriesTwostepLocal->setVisible(show);
     seriesRungekuttaLocal->setVisible(show);
+    seriesEulerGlobal->setVisible(show);
+    seriesLeapfrogGlobal->setVisible(show);
+    seriesTwostepGlobal->setVisible(show);
+    seriesRungekuttaGlobal->setVisible(show);
 }
