@@ -340,7 +340,7 @@ Form::Form(QWidget *parent)
     globalErrorChart->addSeries(seriesLeapfrogGlobal);
     globalErrorChart->addSeries(seriesTwostepGlobal);
     globalErrorChart->addSeries(seriesRungekuttaGlobal);
-    globalErrorChart->setTitle(tr("Global error"));
+    globalErrorChart->setTitle(tr("Integral error"));
     globalErrorChart->legend()->hide();
 
     QValueAxis *axisXGlobal = new QValueAxis;
